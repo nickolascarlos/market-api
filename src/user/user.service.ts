@@ -36,7 +36,6 @@ export class UserService {
     return this.userRepository.findOne(id);
   }
 
-  @UsePipes(new ValidationPipe({ whitelist: true }))
   async update(id: string, payload: UpdateUserDto) {
     const user: User = await this.findOne(id);
     Object.assign(user, payload);
@@ -46,5 +45,12 @@ export class UserService {
 
   remove(id: number) {
     return `This action removes a #${id} user`;
+  }
+
+  getByCredentials(email: string, password: string) {
+    return this.userRepository.findOne({
+      email,
+      password: crypto.createHash('sha256').update(password).digest('hex'),
+    });
   }
 }

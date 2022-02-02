@@ -13,6 +13,10 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ParseUUIDPipe } from '@nestjs/common';
+import { UseGuards } from '@nestjs/common';
+import { LocalAuthGuard } from 'src/auth/guards/local.guard';
+import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
+import { Req } from '@nestjs/common';
 
 @Controller('user')
 export class UserController {
@@ -25,6 +29,7 @@ export class UserController {
   }
 
   @Get()
+  @UseGuards(LocalAuthGuard)
   findAll() {
     return this.userService.findAll();
   }
@@ -49,7 +54,8 @@ export class UserController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
+  @UseGuards(JwtAuthGuard)
+  remove(@Param('id') id: string, @Req() req) {
+    return req.user; // this.userService.remove(+id);
   }
 }
