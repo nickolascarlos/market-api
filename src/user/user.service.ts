@@ -5,6 +5,7 @@ import * as crypto from 'crypto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
+import { ParseUUIDPipe } from '@nestjs/common';
 
 @Injectable()
 export class UserService {
@@ -31,12 +32,16 @@ export class UserService {
     return `This action returns all user`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  findOne(id: string) {
+    return this.userRepository.findOne(id);
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  @UsePipes(new ValidationPipe({ whitelist: true }))
+  async update(id: string, payload: UpdateUserDto) {
+    const user: User = await this.findOne(id);
+    Object.assign(user, payload);
+    await user.save();
+    return user;
   }
 
   remove(id: number) {
