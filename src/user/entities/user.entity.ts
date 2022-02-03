@@ -1,3 +1,4 @@
+import { Provider } from '@nestjs/common';
 import {
   Entity,
   BaseEntity,
@@ -26,6 +27,8 @@ export class User extends BaseEntity {
 
   @Column()
   phone_number: string;
+
+  providers: Array<Provider>;
 
   @CreateDateColumn()
   created_at: Date;

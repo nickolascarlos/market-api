@@ -1,4 +1,5 @@
 import { createConnection } from 'typeorm';
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
 export default {
   provide: 'DATABASE_CONNECTION',
@@ -11,6 +12,7 @@ export default {
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_NAME,
       entities: [__dirname + '/../**/*.entity{.ts,.js}'],
+      namingStrategy: new SnakeNamingStrategy(),
       synchronize: true,
     }),
 };
