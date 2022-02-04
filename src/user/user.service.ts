@@ -1,17 +1,19 @@
-import { Inject, Injectable, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import * as crypto from 'crypto';
 
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
-import { ParseUUIDPipe } from '@nestjs/common';
+import { Provider } from 'src/provider/entities/provider.entity';
 
 @Injectable()
 export class UserService {
   constructor(
     @Inject('USER_REPOSITORY')
     private readonly userRepository: Repository<User>,
+    @Inject('PROVIDER_REPOSITORY')
+    private readonly providerRepository: Repository<Provider>,
   ) {}
 
   async create(payload: CreateUserDto) {
@@ -28,12 +30,19 @@ export class UserService {
     return newUser;
   }
 
-  findAll() {
-    return `This action returns all user`;
+  async findUserProviders(loggedInUserId: string) {
+    const loggedInUser: User = await this.findOne(loggedInUserId);
+    return await this.providerRepository.find({
+      where: {
+        user: loggedInUser,
+      },
+    });
   }
 
   findOne(id: string) {
-    return this.userRepository.findOne(id);
+    return this.userRepository.findOne(id).catch(() => {
+      throw new NotFoundException('User not found');
+    });
   }
 
   async update(id: string, payload: UpdateUserDto) {

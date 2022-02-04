@@ -8,13 +8,13 @@ import {
   Delete,
   ValidationPipe,
   UsePipes,
+  Inject,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ParseUUIDPipe } from '@nestjs/common';
 import { UseGuards } from '@nestjs/common';
-import { LocalAuthGuard } from 'src/auth/guards/local.guard';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { Req } from '@nestjs/common';
 
@@ -28,10 +28,9 @@ export class UserController {
     return this.userService.create(createUserDto);
   }
 
-  @Get()
-  @UseGuards(LocalAuthGuard)
-  findAll() {
-    return this.userService.findAll();
+  @Get(':user_id/providers')
+  findUserProviders(@Param('user_id') userId) {
+    return this.userService.findUserProviders(userId);
   }
 
   @Get(':id')

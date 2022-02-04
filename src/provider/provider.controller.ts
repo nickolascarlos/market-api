@@ -10,6 +10,7 @@ import {
   UsePipes,
   ValidationPipe,
   Req,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { ProviderService } from './provider.service';
 import { CreateProviderDto } from './dto/create-provider.dto';
@@ -34,17 +35,29 @@ export class ProviderController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.providerService.findOne(+id);
+  findOne(@Param('id', ParseUUIDPipe) id: string) {
+    return this.providerService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProviderDto: UpdateProviderDto) {
-    return this.providerService.update(+id, updateProviderDto);
+  @UsePipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+    }),
+  )
+  @UseGuards(JwtAuthGuard)
+  update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updateProviderDto: UpdateProviderDto,
+    @Req() req,
+  ) {
+    return this.providerService.update(id, updateProviderDto, req.user.userId);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.providerService.remove(+id);
+  @UseGuards(JwtAuthGuard)
+  remove(@Param('id', ParseUUIDPipe) id: string, @Req() req) {
+    return this.providerService.remove(id, req.user.userId);
   }
 }
