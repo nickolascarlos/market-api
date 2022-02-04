@@ -39,18 +39,17 @@ export class UserController {
     return this.userService.findOne(id);
   }
 
-  @Patch(':id')
+  @Patch()
   @UsePipes(
     new ValidationPipe({
       whitelist: true,
       forbidNonWhitelisted: true,
     }),
   )
-  update(
-    @Param('id', ParseUUIDPipe) id: string,
-    @Body() updateUserDto: UpdateUserDto,
-  ) {
-    return this.userService.update(id, updateUserDto);
+  @UseGuards(JwtAuthGuard)
+  update(@Body() updateUserDto: UpdateUserDto, @Req() req) {
+    const { userId: loggedInUserId } = req.user;
+    return this.userService.update(loggedInUserId, updateUserDto);
   }
 
   @Delete(':id')
