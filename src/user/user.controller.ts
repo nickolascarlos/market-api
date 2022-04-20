@@ -8,7 +8,6 @@ import {
   Delete,
   ValidationPipe,
   UsePipes,
-  Inject,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';

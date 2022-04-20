@@ -1,5 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { maxDate } from 'class-validator';
 
 import { User } from 'src/user/entities/user.entity';
 import { UserService } from 'src/user/user.service';
@@ -42,7 +43,9 @@ export class AuthService {
   }
 
   async me(req) {
-    const me: User = await this.userService.findOne(req.user.id);
+    const me: User = await User.findOne(req.user.id, {
+      relations: ['providers']
+    });
     return me;
   }
 }
