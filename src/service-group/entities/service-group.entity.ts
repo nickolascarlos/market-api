@@ -10,6 +10,9 @@ export class ServiceGroup extends BaseEntity {
     name: String;
 
     @Column()
+    apiName: String;
+
+    @Column()
     icon: String;
 
     @OneToMany(() => ServiceCategory, (serviceCategory) => serviceCategory.group)
