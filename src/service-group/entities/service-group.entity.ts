@@ -1,5 +1,5 @@
 import { ServiceCategory } from "src/service-category/entities/service-category.entity";
-import { BaseEntity, Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('ServiceGroup')
 export class ServiceGroup extends BaseEntity {
@@ -12,7 +12,6 @@ export class ServiceGroup extends BaseEntity {
     @Column()
     icon: String;
 
-    @ManyToMany(() => ServiceCategory, (serviceCategory) => serviceCategory.groups)
-    @JoinTable()
+    @OneToMany(() => ServiceCategory, (serviceCategory) => serviceCategory.group)
     categories: ServiceCategory[];
 }

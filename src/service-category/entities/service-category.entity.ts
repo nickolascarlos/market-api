@@ -6,8 +6,10 @@ export class ServiceCategory extends BaseEntity {
     @PrimaryGeneratedColumn('uuid')
     id: String;
 
-    @ManyToMany(() => ServiceGroup, (serviceGroup) => serviceGroup.categories)
-    groups: ServiceGroup;
+    @ManyToOne(() => ServiceGroup, (serviceGroup) => serviceGroup.categories, {
+        onDelete: 'SET NULL'
+    })
+    group: ServiceGroup;
 
     @Column()
     name: String;
