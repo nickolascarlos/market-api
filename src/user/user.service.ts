@@ -52,8 +52,10 @@ export class UserService {
     return user;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: string) {
+    const user: User = await this.findOne(id);
+    await user.remove();
+    return 'removed';
   }
 
   getByCredentials(email: string, password: string) {

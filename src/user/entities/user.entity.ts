@@ -1,4 +1,4 @@
-import { Provider } from '@nestjs/common';
+import { Provider } from 'src/provider/entities/provider.entity';
 import {
   Entity,
   BaseEntity,
@@ -6,6 +6,7 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
 
 @Entity('User')
@@ -28,6 +29,9 @@ export class User extends BaseEntity {
   @Column()
   phone_number: string;
 
+  @OneToMany(() => Provider, (provider) => provider.user, {
+    cascade: ['remove']
+  })
   providers: Array<Provider>;
 
   @CreateDateColumn()

@@ -14,7 +14,9 @@ export class Provider extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => User, (user) => user.providers)
+  @ManyToOne(() => User, (user) => user.providers, {
+    onDelete: 'CASCADE',
+  })
   user: User;
 
   @Column({ nullable: true })
