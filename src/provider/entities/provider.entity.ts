@@ -1,3 +1,4 @@
+import { Service } from 'src/service/entities/service.entity';
 import { User } from 'src/user/entities/user.entity';
 import {
   BaseEntity,
@@ -7,6 +8,7 @@ import {
   ManyToOne,
   Entity,
   PrimaryGeneratedColumn,
+  OneToMany,
 } from 'typeorm';
 
 @Entity('Provider')
@@ -19,8 +21,8 @@ export class Provider extends BaseEntity {
   })
   user: User;
 
-  @Column({ nullable: true })
-  user_id: string;
+  @Column()
+  userId: string;
 
   @Column()
   name: string;
@@ -32,17 +34,20 @@ export class Provider extends BaseEntity {
   location: string;
 
   @Column()
-  contact_email: string;
+  contactEmail: string;
 
   @Column()
-  phone_number: string;
+  phoneNumber: string;
 
   @Column()
-  is_phone_whatsapp: boolean;
+  isPhoneWhatsapp: boolean;
+
+  @OneToMany(() => Service, (service) => service.provider)
+  services: Service[];
 
   @CreateDateColumn()
-  created_at: Date;
+  createdAt: Date;
 
   @UpdateDateColumn()
-  updated_at: Date;
+  updatedAt: Date;
 }

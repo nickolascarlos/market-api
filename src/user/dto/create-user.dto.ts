@@ -3,10 +3,10 @@ import EmailNotInUse from 'src/validators/EmailNotInUse.validator';
 
 export class CreateUserDto {
   @IsNotEmpty()
-  first_name: string;
+  firstName: string;
 
   @IsNotEmpty()
-  last_name: string;
+  lastName: string;
 
   @IsEmail()
   @IsNotEmpty()
@@ -18,5 +18,5 @@ export class CreateUserDto {
 
   @IsPhoneNumber('BR')
   @IsNotEmpty()
-  phone_number: string;
+  phoneNumber: string;
 }

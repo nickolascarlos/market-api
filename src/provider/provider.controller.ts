@@ -8,7 +8,6 @@ import {
   Delete,
   UseGuards,
   UsePipes,
-  ValidationPipe,
   Req,
   ParseUUIDPipe,
 } from '@nestjs/common';
@@ -16,6 +15,7 @@ import { ProviderService } from './provider.service';
 import { CreateProviderDto } from './dto/create-provider.dto';
 import { UpdateProviderDto } from './dto/update-provider.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
+import { customValidationPipe } from 'src/utilities';
 
 @Controller('provider')
 export class ProviderController {
@@ -23,7 +23,7 @@ export class ProviderController {
 
   @Post()
   @UseGuards(JwtAuthGuard)
-  @UsePipes(ValidationPipe)
+  @UsePipes(customValidationPipe)
   create(@Body() createProviderDto: CreateProviderDto, @Req() req) {
     const { userId } = req.user;
     return this.providerService.create(createProviderDto, userId);
@@ -40,12 +40,7 @@ export class ProviderController {
   }
 
   @Patch(':id')
-  @UsePipes(
-    new ValidationPipe({
-      whitelist: true,
-      forbidNonWhitelisted: true,
-    }),
-  )
+  @UsePipes(customValidationPipe)
   @UseGuards(JwtAuthGuard)
   update(
     @Param('id', ParseUUIDPipe) id: string,

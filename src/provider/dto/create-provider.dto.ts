@@ -10,12 +10,12 @@ export class CreateProviderDto {
   location: string;
 
   @IsEmail()
-  contact_email: string;
+  contactEmail: string;
 
   @IsNotEmpty()
   @IsPhoneNumber('BR')
-  phone_number: string;
+  phoneNumber: string;
 
   @IsNotEmpty()
-  is_phone_whatsapp: boolean;
+  isPhoneWhatsapp: boolean;
 }

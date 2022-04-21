@@ -15,10 +15,10 @@ export class User extends BaseEntity {
   id: string;
 
   @Column()
-  first_name: string;
+  firstName: string;
 
   @Column()
-  last_name: string;
+  lastName: string;
 
   @Column({ unique: true })
   email: string;
@@ -27,7 +27,7 @@ export class User extends BaseEntity {
   password: string;
 
   @Column()
-  phone_number: string;
+  phoneNumber: string;
 
   @OneToMany(() => Provider, (provider) => provider.user, {
     cascade: ['remove']
@@ -35,8 +35,8 @@ export class User extends BaseEntity {
   providers: Array<Provider>;
 
   @CreateDateColumn()
-  created_at: Date;
+  createdAt: Date;
 
   @UpdateDateColumn()
-  updated_at: Date;
+  updatedAt: Date;
 }

@@ -9,13 +9,6 @@ import { Provider } from 'src/provider/entities/provider.entity';
 
 @Injectable()
 export class UserService {
-  constructor(
-    @Inject('USER_REPOSITORY')
-    private readonly userRepository: Repository<User>,
-    @Inject('PROVIDER_REPOSITORY')
-    private readonly providerRepository: Repository<Provider>,
-  ) {}
-
   async create(payload: CreateUserDto) {
     const newUser = new User();
     Object.assign(newUser, {
@@ -32,7 +25,7 @@ export class UserService {
 
   async findUserProviders(loggedInUserId: string) {
     const loggedInUser: User = await this.findOne(loggedInUserId);
-    return await this.providerRepository.find({
+    return await Provider.find({
       where: {
         user: loggedInUser,
       },
@@ -40,7 +33,7 @@ export class UserService {
   }
 
   findOne(id: string) {
-    return this.userRepository.findOne(id).catch(() => {
+    return User.findOne(id).catch(() => {
       throw new NotFoundException('User not found');
     });
   }
@@ -59,7 +52,7 @@ export class UserService {
   }
 
   getByCredentials(email: string, password: string) {
-    return this.userRepository.findOne({
+    return User.findOne({
       email,
       password: crypto.createHash('sha256').update(password).digest('hex'),
     });

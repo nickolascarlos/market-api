@@ -4,9 +4,7 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { User } from 'src/user/entities/user.entity';
 import { UserService } from 'src/user/user.service';
-import { Repository } from 'typeorm';
 import { CreateProviderDto } from './dto/create-provider.dto';
 import { UpdateProviderDto } from './dto/update-provider.dto';
 import { Provider } from './entities/provider.entity';
@@ -15,17 +13,15 @@ import { Provider } from './entities/provider.entity';
 export class ProviderService {
   constructor(
     private readonly userService: UserService,
-    @Inject('PROVIDER_REPOSITORY')
-    private readonly providerRepository: Repository<Provider>,
   ) {}
 
   async create(payload: CreateProviderDto, userId: string) {
     const newProvider = new Provider();
-    const owner: User = await this.userService.findOne(userId);
+    console.log(userId)
     Object.assign(newProvider, {
-      ...payload,
-      user: owner,
-    });
+        ...payload,
+        userId
+      });
     await newProvider.save();
     delete newProvider.user;
     return newProvider;
@@ -36,7 +32,7 @@ export class ProviderService {
   }
 
   findOne(id: string) {
-    return this.providerRepository.findOneOrFail(id).catch(() => {
+    return Provider.findOneOrFail(id).catch(() => {
       throw new NotFoundException('No provider with such id');
     });
   }
@@ -45,7 +41,7 @@ export class ProviderService {
     const provider = await this.findOne(id);
 
     // Make sure Provider belongs to logged-in user
-    if (provider.user_id !== loggedInUserId)
+    if (provider.userId !== loggedInUserId)
       throw new UnauthorizedException(
         'Provider does not belong to logged-in user',
       );
@@ -64,7 +60,7 @@ export class ProviderService {
   async findOneFromUser(providerId: string, loggedInUserId: string) {
     const provider: Provider = await this.findOne(providerId);
 
-    if (provider.user_id !== loggedInUserId)
+    if (provider.userId !== loggedInUserId)
       throw new UnauthorizedException(
         'Provider does not belong to logged-in user',
       );
