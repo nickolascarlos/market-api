@@ -56,14 +56,19 @@ export class ProviderService {
   }
 
   async remove(id: string, loggedInUserId: string) {
-    const provider = await this.findOne(id);
+    const provider = await this.findOneFromUser(id, loggedInUserId);
 
-    // Make sure Provider belongs to logged-in user
+    return await provider.remove();
+  }
+
+  async findOneFromUser(providerId: string, loggedInUserId: string) {
+    const provider: Provider = await this.findOne(providerId);
+
     if (provider.user_id !== loggedInUserId)
       throw new UnauthorizedException(
         'Provider does not belong to logged-in user',
       );
 
-    return await provider.remove();
+    return await provider;
   }
 }
