@@ -16,7 +16,12 @@ export class ServiceService {
 
     let service: Service = new Service();
     Object.assign(service, payload);
-    return await service.save();
+    try {
+      return await service.save();
+    } catch (e) {
+      console.log('Nobody knows the way it\'s going to be');
+      console.log(e);
+    }
   }
 
   async findAll(offset: number, limit: number) {
@@ -60,7 +65,12 @@ export class ServiceService {
 
     Object.assign(service, payload);
 
-    return await service.save();
+    try {
+      return await service.save();
+    } catch (e) {
+      console.log('Nobody knows the way it\'s going to be');
+      console.log(e);
+    }
   }
 
   async remove(id: string, userId: string) {

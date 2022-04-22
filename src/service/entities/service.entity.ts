@@ -39,7 +39,7 @@ export class Service extends BaseEntity {
     @Column()
     acceptsCards: boolean;
     
-    @Column("text")
+    @Column("jsonb")
     details: PossibleServices;
 
     @CreateDateColumn()
