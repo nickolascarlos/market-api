@@ -23,7 +23,7 @@ export class AuthService {
       { secret: process.env.JWT_SECRET },
     );
 
-    let userData = await User.findOne(user.userId, {
+    let userData = await User.findOne(user.id, {
       relations: ['providers']
     });
 
