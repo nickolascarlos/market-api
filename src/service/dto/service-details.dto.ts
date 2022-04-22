@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { IsEnum, IsOptional, ValidateNested } from "class-validator";
+import { IsBoolean, IsEnum, IsNumber, IsOptional, IsString, ValidateNested } from "class-validator";
 import { CargoType, VehicleType, WeekDay } from "src/types";
 import { CreateItineraryDto } from "./create-itinerary.dto";
 import { PlaceDto } from "./create-place.dto";
@@ -11,9 +11,11 @@ export class CreateServiceDetailsDto {
     itinerary: CreateItineraryDto;
 
     @IsOptional()
+    @IsString()
     goingTripStartTime: string;
     
     @IsOptional()
+    @IsString()
     returnTripStartTime: string;
     
     @IsOptional()
@@ -21,18 +23,23 @@ export class CreateServiceDetailsDto {
     workingDays: WeekDay[];
     
     @IsOptional()
+    @IsString()
     hasAssistant: boolean;
     
     @IsOptional()
+    @IsString()
     tripStartDateTime: string;
     
     @IsOptional()
+    @IsNumber()
     seats: number;
     
     @IsOptional()
+    @IsBoolean()
     acceptsPackages: boolean;
     
     @IsOptional()
+    @IsBoolean()
     isTripStartTimeFlexible: boolean;
     
     @IsOptional()
@@ -46,6 +53,9 @@ export class CreateServiceDetailsDto {
     operatingAreas: PlaceDto[];
     
     @IsOptional()
+    @IsNumber({
+        maxDecimalPlaces: 0
+    })
     vehicleSeats: number;
     
     @IsOptional()
@@ -53,12 +63,19 @@ export class CreateServiceDetailsDto {
     vehicleType: VehicleType;
     
     @IsOptional()
+    @IsNumber({
+        maxDecimalPlaces: 2
+    })
     hourlyPrice: number;
     
     @IsOptional()
+    @IsNumber({
+        maxDecimalPlaces: 2
+    })
     mileagePrice: number;
     
     @IsOptional()
+    @IsBoolean()
     hasDriver: boolean;
     
     @IsOptional()
@@ -67,15 +84,23 @@ export class CreateServiceDetailsDto {
     dropOffPlaces: PlaceDto[];
     
     @IsOptional()
+    @IsNumber({
+        maxDecimalPlaces: 2
+    })
     dailyPrice: number;
     
     @IsOptional()
+    @IsNumber({
+        maxDecimalPlaces: 2
+    })
     surplusMileagePrice: number;
     
     @IsOptional()
+    @IsString()
     workingHoursStart: string;
     
     @IsOptional()
+    @IsString()
     workingHoursEnd: string;
     
     @IsOptional()
@@ -88,11 +113,16 @@ export class CreateServiceDetailsDto {
     cargoTypes: CargoType[];
     
     @IsOptional()
+    @IsNumber({
+        maxDecimalPlaces: 2
+    })
     maximumWeight: number;
     
     @IsOptional()
+    @IsBoolean()
     hasPackaging: boolean;
     
     @IsOptional()
+    @IsBoolean()
     hasFurnitureAssembly: boolean;
 }
