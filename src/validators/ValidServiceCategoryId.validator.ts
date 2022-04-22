@@ -3,12 +3,12 @@ import {
     ValidatorConstraintInterface,
     ValidationArguments,
   } from 'class-validator';
-import { ServiceCategoryService } from 'src/service-category/service-category.service';
+import { ServiceCategory } from 'src/service-category/entities/service-category.entity';
   
-@ValidatorConstraint({ name: 'ValidServiceCategory', async: true })
-export default class ValidServiceCategory implements ValidatorConstraintInterface {
+@ValidatorConstraint({ name: 'ValidServiceCategoryId', async: true })
+export default class ValidServiceCategoryId implements ValidatorConstraintInterface {
     async validate(serviceCategoryId: string, args: ValidationArguments): Promise<boolean> {
-        let serviceCategory = await new ServiceCategoryService().findOne(serviceCategoryId).catch(() => null)
+        let serviceCategory = await ServiceCategory.findOne(serviceCategoryId).catch(() => null)
         return Boolean(serviceCategory)
     }
   
