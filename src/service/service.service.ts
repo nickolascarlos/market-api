@@ -19,9 +19,12 @@ export class ServiceService {
     return await service.save();
   }
 
-  async findAll() {
+  async findAll(offset: number, limit: number) {
     // Todo: Implementar paginação
-    const services: Service[] = await Service.find();
+    const services: Service[] = await Service.find({
+      skip: offset,
+      take: limit
+    });
 
     return services;
   }

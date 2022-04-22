@@ -4,6 +4,7 @@ import { CreateServiceDto } from './dto/create-service.dto';
 import { UpdateServiceDto } from './dto/update-service.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { customValidationPipe } from 'src/utilities';
+import { OffsetWithoutLimitNotSupportedError } from 'typeorm';
 
 @Controller('service')
 export class ServiceController {
@@ -16,9 +17,9 @@ export class ServiceController {
     return this.serviceService.create(createServiceDto, req.user.userId);
   }
 
-  @Get()
-  findAll() {
-    return this.serviceService.findAll();
+  @Get(':offset?/:limit?')
+  findAll(@Param('offset') offset: string = '0', @Param('limit') limit: string = '25') {
+    return this.serviceService.findAll(+offset, +limit);
   }
 
   @Get(':id')
