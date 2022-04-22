@@ -42,7 +42,9 @@ export class Provider extends BaseEntity {
   @Column()
   isPhoneWhatsapp: boolean;
 
-  @OneToMany(() => Service, (service) => service.provider)
+  @OneToMany(() => Service, (service) => service.provider, {
+    cascade: ['remove']
+  })
   services: Service[];
 
   @CreateDateColumn()

@@ -8,7 +8,9 @@ export class Service extends BaseEntity {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @ManyToOne(() => Provider, (provider) => provider.services)
+    @ManyToOne(() => Provider, (provider) => provider.services, {
+        onDelete: 'CASCADE'
+    })
     provider: Provider;
 
     @Column({ nullable: true })
