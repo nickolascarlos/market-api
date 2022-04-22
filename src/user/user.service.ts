@@ -35,7 +35,7 @@ export class UserService {
   }
 
   findOne(id: string) {
-    return User.findOne(id).catch(() => {
+    return User.findOneOrFail(id).catch(() => {
       throw new NotFoundException('User not found');
     });
   }

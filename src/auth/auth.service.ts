@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { maxDate } from 'class-validator';
 import * as _ from 'lodash';
@@ -52,9 +52,7 @@ export class AuthService {
   }
 
   async me(req) {
-    const me: User = await User.findOne(req.user.id, {
-      relations: ['providers']
-    });
+    const me: User = await this.userService.findOne(req.user.userId)
     return me;
   }
 }
