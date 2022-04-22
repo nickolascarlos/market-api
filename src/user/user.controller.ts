@@ -16,20 +16,21 @@ import { ParseUUIDPipe } from '@nestjs/common';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { Req } from '@nestjs/common';
+import { customValidationPipe } from 'src/utilities';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  @UsePipes(new ValidationPipe({ whitelist: true }))
+  @UsePipes(customValidationPipe)
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
   }
 
-  @Get(':user_id/providers')
-  findUserProviders(@Param('user_id') userId) {
-    return this.userService.findUserProviders(userId);
+  @Get(':user_id/providers/:offset?/:limit?')
+  findUserProviders(@Param('user_id') userId: string, @Param('offset') offset = 0, @Param('limit') limit = 25) {
+    return this.userService.findUserProviders(userId, +offset, +limit);
   }
 
   @Get(':id')
@@ -38,12 +39,7 @@ export class UserController {
   }
 
   @Patch()
-  @UsePipes(
-    new ValidationPipe({
-      whitelist: true,
-      forbidNonWhitelisted: true,
-    }),
-  )
+  @UsePipes(customValidationPipe)
   @UseGuards(JwtAuthGuard)
   update(@Body() updateUserDto: UpdateUserDto, @Req() req) {
     const { userId: loggedInUserId } = req.user;

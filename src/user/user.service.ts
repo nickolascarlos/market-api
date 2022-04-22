@@ -23,12 +23,14 @@ export class UserService {
     return newUser;
   }
 
-  async findUserProviders(loggedInUserId: string) {
+  async findUserProviders(loggedInUserId: string, offset: number = 0, limit: number = Infinity) {
     const loggedInUser: User = await this.findOne(loggedInUserId);
     return await Provider.find({
       where: {
         user: loggedInUser,
       },
+      skip: offset,
+      take: limit,
     });
   }
 

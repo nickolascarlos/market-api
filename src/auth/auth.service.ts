@@ -27,9 +27,8 @@ export class AuthService {
       relations: ['providers']
     });
 
-    // Omit o campo user_id (redundantes) dos providers
+    // Omite o campo user_id (redundantes) dos providers
     userData.providers = userData.providers.map((provider) => {
-      console.log(provider)
       return _.omit(provider, ['user_id'])
     })
 
