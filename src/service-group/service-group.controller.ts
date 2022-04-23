@@ -18,7 +18,7 @@ export class ServiceGroupController {
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseUUIDPipe) id: string) {
+  findOne(@Param('id') id: string) {
     return this.serviceGroupService.findOne(id);
   }
 
