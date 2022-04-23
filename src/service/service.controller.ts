@@ -21,15 +21,15 @@ export class ServiceController {
   search(@Param('query') query: string) {
     return this.serviceService.search(query);
   }
-
-  @Get(':offset?/:limit?')
-  findAll(@Param('offset') offset: string = '0', @Param('limit') limit: string = '25') {
-    return this.serviceService.findAll(+offset, +limit);
-  }
-
+  
   @Get(':id')
   findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.serviceService.findOne(id);
+  }
+  
+  @Get(':offset?/:limit?')
+  findAll(@Param('offset') offset: string = '0', @Param('limit') limit: string = '25') {
+    return this.serviceService.findAll(+offset, +limit);
   }
 
   @Patch(':id')

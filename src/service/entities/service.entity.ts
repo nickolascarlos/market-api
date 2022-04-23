@@ -26,9 +26,8 @@ export class Service extends BaseEntity {
     @Column()
     description: string;
 
-    @Column("decimal", {
-        precision: 5,
-        scale: 2
+    @Column("real", {
+        default: 0
     })
     price: number;
 

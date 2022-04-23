@@ -50,7 +50,7 @@ export class ServiceService {
 
     // Transforma o JSON armazenado no banco de
     // dados, em forma de string, em um objeto.
-    service.details = JSON.parse(String(service.details))
+    service.details = service.details
   
     return service;
   }
