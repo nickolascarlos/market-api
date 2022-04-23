@@ -11,7 +11,7 @@ export class ServiceCategoryService {
 
   async findAll() {
     const categories: ServiceCategory[] = await ServiceCategory.find({
-      relations: ['groups'],
+      relations: ['group'],
     });
 
     return categories;
@@ -19,7 +19,7 @@ export class ServiceCategoryService {
 
   async findOne(id: string) {
     const category: ServiceCategory = await ServiceCategory.findOneOrFail(id, {
-      relations: ['groups'],
+      relations: ['group'],
     }).catch(e => { throw new NotFoundException('No service category with such id')})
 
     return category;
