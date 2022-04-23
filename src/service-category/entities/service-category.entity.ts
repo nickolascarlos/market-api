@@ -1,14 +1,12 @@
 import { ServiceGroup } from "src/service-group/entities/service-group.entity";
-import { BaseEntity, Column, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('ServiceCategory')
 export class ServiceCategory extends BaseEntity {
-    @PrimaryGeneratedColumn('uuid')
-    id: String;
-
     @ManyToOne(() => ServiceGroup, (serviceGroup) => serviceGroup.categories, {
         onDelete: 'SET NULL'
     })
+    @JoinColumn({name: 'groupName'})
     group: ServiceGroup;
 
     @Column()
@@ -17,7 +15,7 @@ export class ServiceCategory extends BaseEntity {
     @Column()
     icon: String;
 
-    @Column()
+    @PrimaryColumn()
     apiName: String;
 
     @Column("text", {

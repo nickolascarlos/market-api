@@ -17,6 +17,11 @@ export class ServiceController {
     return this.serviceService.create(createServiceDto, req.user.userId);
   }
 
+  @Get('search/:query')
+  search(@Param('query') query: string) {
+    return this.serviceService.search(query);
+  }
+
   @Get(':offset?/:limit?')
   findAll(@Param('offset') offset: string = '0', @Param('limit') limit: string = '25') {
     return this.serviceService.findAll(+offset, +limit);

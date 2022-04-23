@@ -1,15 +1,12 @@
 import { ServiceCategory } from "src/service-category/entities/service-category.entity";
-import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('ServiceGroup')
 export class ServiceGroup extends BaseEntity {
-    @PrimaryGeneratedColumn('uuid')
-    id: String;
-
     @Column()
     name: String;
 
-    @Column()
+    @PrimaryColumn()
     apiName: String;
 
     @Column()

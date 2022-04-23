@@ -4,6 +4,8 @@ import { CreateServiceDto } from './dto/create-service.dto';
 import { UpdateServiceDto } from './dto/update-service.dto';
 import { Service } from './entities/service.entity';
 import * as _ from 'lodash';
+import { result } from 'lodash';
+import { Like } from 'typeorm';
 
 @Injectable()
 export class ServiceService {
@@ -96,4 +98,16 @@ export class ServiceService {
 
     return service;
   }
+
+  async search(query: string) {
+    console.log(Like(`%${query}%`))
+    let result = await Service.find({
+      where: {
+        description: Like(`%${query}%`)
+      }
+    })
+
+    return result;
+  }
+
 }

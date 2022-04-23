@@ -1,7 +1,7 @@
 import { Provider } from "src/provider/entities/provider.entity";
 import { ServiceCategory } from "src/service-category/entities/service-category.entity";
 import { Amenity, PossibleServices } from "src/types";
-import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity('Service')
 export class Service extends BaseEntity {
@@ -17,6 +17,7 @@ export class Service extends BaseEntity {
     providerId: string;
 
     @ManyToOne(() => ServiceCategory)
+    @JoinColumn({name: 'categoryId'})
     category: ServiceCategory;
 
     @Column({ nullable: true })

@@ -9,7 +9,6 @@ export class CreateServiceDto {
     @IsNotEmpty()
     providerId: string;
 
-    @IsUUID()
     @IsNotEmpty()
     @Validate(ValidServiceCategoryId)
     categoryId: string;
