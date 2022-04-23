@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { IsBoolean, IsEnum, IsNumber, IsOptional, IsString, ValidateNested } from "class-validator";
+import { IsBoolean, IsDate, IsDateString, IsEnum, IsNumber, IsOptional, IsString, ValidateNested } from "class-validator";
 import { CargoType, VehicleType, WeekDay } from "src/types";
 import { CreateItineraryDto } from "./create-itinerary.dto";
 import { PlaceDto } from "./create-place.dto";
@@ -11,11 +11,11 @@ export class CreateServiceDetailsDto {
     itinerary: CreateItineraryDto;
 
     @IsOptional()
-    @IsString()
+    @IsDateString()
     goingTripStartTime: string;
     
     @IsOptional()
-    @IsString()
+    @IsDateString()
     returnTripStartTime: string;
     
     @IsOptional()
