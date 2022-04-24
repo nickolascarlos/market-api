@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsPhoneNumber, Validate } from 'class-validator';
+import { IsBoolean, IsEmail, IsNotEmpty, IsPhoneNumber, Validate } from 'class-validator';
 import EmailNotInUse from 'src/validators/EmailNotInUse.validator';
 
 export class CreateUserDto {
@@ -19,4 +19,8 @@ export class CreateUserDto {
   @IsPhoneNumber('BR')
   @IsNotEmpty()
   phoneNumber: string;
+
+  @IsBoolean()
+  @IsNotEmpty()
+  isPhoneWhatsapp: boolean;
 }

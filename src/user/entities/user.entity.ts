@@ -29,6 +29,9 @@ export class User extends BaseEntity {
   @Column()
   phoneNumber: string;
 
+  @Column({ default: false })
+  isPhoneWhatsapp: boolean;
+
   @OneToMany(() => Provider, (provider) => provider.user, {
     cascade: ['remove']
   })
