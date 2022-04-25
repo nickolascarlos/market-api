@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { IsBoolean, IsDate, IsDateString, IsEnum, IsNumber, IsOptional, IsString, ValidateNested } from "class-validator";
+import { IsBoolean, IsDate, IsDateString, IsEnum, IsNumber, IsOptional, IsString, Max, Min, ValidateNested } from "class-validator";
 import { CargoType, VehicleType, WeekDay } from "src/types";
 import { CreateItineraryDto } from "./create-itinerary.dto";
 import { PlaceDto } from "./create-place.dto";
@@ -11,12 +11,16 @@ export class CreateServiceDetailsDto {
     itinerary: CreateItineraryDto;
 
     @IsOptional()
-    @IsDateString()
-    goingTripStartTime: string;
+    @IsNumber()
+    @Min(0)
+    @Max(86399000)
+    goingTripStartTime: number;
     
     @IsOptional()
-    @IsDateString()
-    returnTripStartTime: string;
+    @IsNumber()
+    @Min(0)
+    @Max(86399000)
+    returnTripStartTime: number;
     
     @IsOptional()
     @IsEnum(WeekDay, { each: true })
@@ -27,8 +31,8 @@ export class CreateServiceDetailsDto {
     hasAssistant: boolean;
     
     @IsOptional()
-    @IsString()
-    tripStartDateTime: string;
+    @IsDateString()
+    tripStartDateTime: Date;
     
     @IsOptional()
     @IsNumber()
@@ -96,11 +100,15 @@ export class CreateServiceDetailsDto {
     surplusMileagePrice: number;
     
     @IsOptional()
-    @IsString()
+    @IsNumber()
+    @Min(0)
+    @Max(86399000)
     workingHoursStart: string;
     
     @IsOptional()
-    @IsString()
+    @IsNumber()
+    @Min(0)
+    @Max(86399000)
     workingHoursEnd: string;
     
     @IsOptional()
