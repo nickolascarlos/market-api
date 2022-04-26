@@ -31,8 +31,8 @@ export class CreateServiceDetailsDto {
     hasAssistant: boolean;
     
     @IsOptional()
-    @IsDateString()
-    tripStartDateTime: Date;
+    @IsNumber()
+    tripStartDateTime: number;
     
     @IsOptional()
     @IsNumber()

@@ -4,7 +4,7 @@ import { CreateServiceDto } from './dto/create-service.dto';
 import { UpdateServiceDto } from './dto/update-service.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { customValidationPipe } from 'src/utilities';
-import { OffsetWithoutLimitNotSupportedError } from 'typeorm';
+import { searchDto } from './dto/search.dto';
 
 @Controller('service')
 export class ServiceController {
@@ -17,9 +17,10 @@ export class ServiceController {
     return this.serviceService.create(createServiceDto, req.user.userId);
   }
 
-  @Get('search/:query')
-  search(@Param('query') query: string) {
-    return this.serviceService.search(query);
+  @Get('search')
+  @UsePipes(customValidationPipe)
+  search(@Body() searchDto: searchDto) {
+    return this.serviceService.search(searchDto);
   }
   
   @Get(':id')

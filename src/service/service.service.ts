@@ -6,6 +6,7 @@ import { Service } from './entities/service.entity';
 import * as _ from 'lodash';
 import { result } from 'lodash';
 import { Like } from 'typeorm';
+import { searchDto } from './dto/search.dto';
 
 @Injectable()
 export class ServiceService {
@@ -99,15 +100,25 @@ export class ServiceService {
     return service;
   }
 
-  async search(query: string) {
-    console.log(Like(`%${query}%`))
-    let result = await Service.find({
-      where: {
-        description: Like(`%${query}%`)
-      }
-    })
+  async search(payload: searchDto) {
+  
+    let query = Service.getRepository().createQueryBuilder("service")
 
-    return result;
+    if (payload.categoryName)
+      query.andWhere(`"categoryId" = :categoryId`, {categoryId: payload.categoryName})
+
+    if (payload.destination)
+      query.andWhere(`plainto_tsquery('portuguese', :destination) @@ to_tsvector('portuguese', COALESCE(service.details->>'destination', service.details->'itinerary'->>'destination'))`, {destination: payload.destination})
+    
+    if (payload.origin)
+      query.andWhere(`plainto_tsquery('portuguese', :origin) @@ to_tsvector('portuguese', COALESCE(service.details->>'origin', service.details->'itinerary'->>'origin'))`, {origin: payload.origin})
+
+    if (payload.date)
+      query.andWhere(`(to_timestamp((details->>'tripStartDateTime')::integer) at time zone :timezone)::date = :startDate`, {timezone: payload.timezone, startDate: payload.date})
+    
+    let results = await query.getMany()
+    
+    return results;
   }
 
 }
