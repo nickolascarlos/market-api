@@ -4,7 +4,7 @@ import { BaseEntity, Column, Entity, OneToMany, PrimaryColumn, PrimaryGeneratedC
 @Entity('ServiceGroup')
 export class ServiceGroup extends BaseEntity {
     @Column()
-    name: String;
+    displayName: String;
 
     @PrimaryColumn()
     apiName: String;

@@ -10,7 +10,7 @@ export class ServiceCategory extends BaseEntity {
     group: ServiceGroup;
 
     @Column()
-    name: String;
+    displayName: String;
 
     @Column()
     icon: String;
@@ -22,6 +22,4 @@ export class ServiceCategory extends BaseEntity {
         array: true,
     })
     alternativeNames: String[];
-
-    // services: Service[]
 }

@@ -5,7 +5,7 @@ import {
 } from 'class-validator';
 import { User } from '../user/entities/user.entity';
 
-@ValidatorConstraint({ name: 'EmailNotInUse', async: true })
+@ValidatorConstraint({ name: 'isEmailNotInUse', async: true })
 export default class EmailNotInUse implements ValidatorConstraintInterface {
   async validate(email: string, args: ValidationArguments): Promise<boolean> {
     const emailIsRegistered = !!(await User.findOne({

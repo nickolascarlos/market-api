@@ -44,11 +44,6 @@ export class ServiceService {
       throw new NotFoundException('No service with such id')
     })
 
-    // Omite service.catergoryId, já que
-    // a relação category foi carregada e,
-    // então, o categoryId estará nela
-    delete service.categoryId;
-
     // Transforma o JSON armazenado no banco de
     // dados, em forma de string, em um objeto.
     service.details = service.details
@@ -68,12 +63,8 @@ export class ServiceService {
 
     Object.assign(service, payload);
 
-    try {
-      return await service.save();
-    } catch (e) {
-      console.log('Nobody knows the way it\'s going to be');
-      console.log(e);
-    }
+    return await service.save();
+
   }
 
   async remove(id: string, userId: string) {
@@ -117,7 +108,7 @@ export class ServiceService {
       query.andWhere(`(to_timestamp((details->>'tripStartDateTime')::integer) at time zone :timezone)::date = :startDate`, {timezone: payload.timezone, startDate: payload.date})
     
     let results = await query.getMany()
-    
+
     return results;
   }
 

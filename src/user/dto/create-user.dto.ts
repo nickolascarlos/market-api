@@ -22,5 +22,5 @@ export class CreateUserDto {
 
   @IsBoolean()
   @IsNotEmpty()
-  isPhoneWhatsapp: boolean;
+  isPhoneWhatsApp: boolean;
 }

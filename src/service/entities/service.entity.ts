@@ -17,11 +17,11 @@ export class Service extends BaseEntity {
     providerId: string;
 
     @ManyToOne(() => ServiceCategory)
-    @JoinColumn({name: 'categoryId'})
+    @JoinColumn({name: 'categoryName'})
     category: ServiceCategory;
 
     @Column({ nullable: true })
-    categoryId: string;
+    categoryName: string;
 
     @Column()
     description: string;

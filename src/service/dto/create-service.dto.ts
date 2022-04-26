@@ -1,7 +1,7 @@
 import { Type } from "class-transformer";
 import { IsBoolean, IsEnum, IsNotEmpty, IsNotEmptyObject, IsNumber, IsOptional, IsString, IsUUID, Max, Validate, ValidateNested } from "class-validator";
 import { Amenity } from "src/types";
-import ValidServiceCategoryId from "src/validators/ValidServiceCategoryId.validator";
+import ValidServiceCategoryName from "src/validators/ValidServiceCategoryName.validator";
 import { CreateServiceDetailsDto } from "./service-details.dto";
 
 export class CreateServiceDto {
@@ -10,8 +10,8 @@ export class CreateServiceDto {
     providerId: string;
 
     @IsNotEmpty()
-    @Validate(ValidServiceCategoryId)
-    categoryId: string;
+    @Validate(ValidServiceCategoryName)
+    categoryName: string;
 
     @IsString()
     @IsNotEmpty()
