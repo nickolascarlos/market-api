@@ -51,4 +51,12 @@ export class UserController {
   remove(@Req() req) {
     return this.userService.remove(req.user.userId)
   }
+
+  @Patch('change-password')
+  @UsePipes(customValidationPipe)
+  @UseGuards(JwtAuthGuard)
+  changePassword(@Body() payload, @Req() req) {
+    return this.userService.changePassword(payload, req.user.userId)
+  }
+
 }

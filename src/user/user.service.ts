@@ -1,4 +1,4 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import * as crypto from 'crypto';
 
@@ -6,6 +6,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { Provider } from 'src/provider/entities/provider.entity';
+import { updateUserPasswordDto } from './dto/update-password.dto';
 
 @Injectable()
 export class UserService {
@@ -59,4 +60,31 @@ export class UserService {
       password: crypto.createHash('sha256').update(password).digest('hex'),
     });
   }
+
+  async changePassword(payload: updateUserPasswordDto, userId: string) {
+    
+    // Verifica se currentPassword de fato corresponde à senha atual do usuário logado
+    let hashedCurrentPassword = crypto.createHash('sha256').update(payload.currentPassword).digest('hex');
+    let user: User = await User.findOne({
+      where: {
+        id: userId,
+        password: hashedCurrentPassword
+      }
+    })
+
+    if (!user) {
+      throw new UnauthorizedException('The provided currentPassword does not match the actual current password')
+    }
+
+    // Se corresponder, atualiza a senha
+    let hashedNewPassword = crypto.createHash('sha256').update(payload.newPassword).digest('hex');
+    await User.createQueryBuilder('user')
+      .update()
+      .set({password: hashedNewPassword})
+      .where("id = :id", {id: userId})
+      .execute()
+
+    return 'updated'
+  }
+
 }
