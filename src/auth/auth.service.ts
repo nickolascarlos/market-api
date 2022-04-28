@@ -18,7 +18,7 @@ export class AuthService {
     if (!user) throw new UnauthorizedException();
 
     const token = await this.jwtService.sign(
-      { userId: user.id },
+      { userId: user.id, userRole: user.role },
       { secret: process.env.JWT_SECRET },
     );
 
