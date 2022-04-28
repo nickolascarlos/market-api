@@ -1,26 +1,32 @@
-import { Type } from "class-transformer";
-import { IsLatitude, IsLongitude, IsNotEmpty, IsNotEmptyObject, IsOptional, Validate, ValidateNested } from "class-validator";
-import { AddressDto } from "./create-address.dto";
-
+import { Type } from 'class-transformer';
+import {
+  IsLatitude,
+  IsLongitude,
+  IsNotEmpty,
+  IsNotEmptyObject,
+  IsOptional,
+  ValidateNested,
+} from 'class-validator';
+import { AddressDto } from './create-address.dto';
 
 export class LocationDto {
-    @IsNotEmpty()
-    @IsLatitude()
-    lat: number; 
+  @IsNotEmpty()
+  @IsLatitude()
+  lat: number;
 
-    @IsNotEmpty()
-    @IsLongitude()
-    lng: number;
+  @IsNotEmpty()
+  @IsLongitude()
+  lng: number;
 }
 
 export class PlaceDto {
-    @IsNotEmptyObject()
-    @ValidateNested()
-    @Type(() => AddressDto)
-    address: AddressDto;
+  @IsNotEmptyObject()
+  @ValidateNested()
+  @Type(() => AddressDto)
+  address: AddressDto;
 
-    @IsOptional()
-    @ValidateNested()
-    @Type(() => LocationDto)
-    location: LocationDto;
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => LocationDto)
+  location: LocationDto;
 }

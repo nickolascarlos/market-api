@@ -1,4 +1,8 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { ProviderService } from 'src/provider/provider.service';
 import { CreateServiceDto } from './dto/create-service.dto';
 import { UpdateServiceDto } from './dto/update-service.dto';
@@ -13,16 +17,16 @@ export class ServiceService {
   constructor(private readonly providerService: ProviderService) {}
 
   async create(payload: CreateServiceDto, userId: string) {
-    // Verifica se o provider especificado 
+    // Verifica se o provider especificado
     // pertence ao usuário logado
     await this.providerService.findOneFromUser(payload.providerId, userId);
 
-    let service: Service = new Service();
+    const service: Service = new Service();
     Object.assign(service, payload);
     try {
       return await service.save();
     } catch (e) {
-      console.log('Nobody knows the way it\'s going to be');
+      console.log("Nobody knows the way it's going to be");
       console.log(e);
     }
   }
@@ -31,7 +35,7 @@ export class ServiceService {
     // Todo: Implementar paginação
     const services: Service[] = await Service.find({
       skip: offset,
-      take: limit
+      take: limit,
     });
 
     return services;
@@ -39,15 +43,15 @@ export class ServiceService {
 
   async findOne(id: string) {
     const service: Service = await Service.findOneOrFail(id, {
-      relations: ['category']
-    }).catch(e => {
-      throw new NotFoundException('No service with such id')
-    })
+      relations: ['category'],
+    }).catch((e) => {
+      throw new NotFoundException('No service with such id');
+    });
 
     // Transforma o JSON armazenado no banco de
     // dados, em forma de string, em um objeto.
-    service.details = service.details
-  
+    service.details = service.details;
+
     return service;
   }
 
@@ -64,7 +68,6 @@ export class ServiceService {
     Object.assign(service, payload);
 
     return await service.save();
-
   }
 
   async remove(id: string, userId: string) {
@@ -84,32 +87,45 @@ export class ServiceService {
     // Certifica-se, através do provider, de que o service
     // pertence ao usuário logado. Se não for, uma exceção
     // é lançada
-    await this.providerService.findOneFromUser(service.providerId, userId).catch(e => {
-      throw new ForbiddenException('This service does not belong to the logged-in user')
-    });
+    await this.providerService
+      .findOneFromUser(service.providerId, userId)
+      .catch((e) => {
+        throw new ForbiddenException(
+          'This service does not belong to the logged-in user',
+        );
+      });
 
     return service;
   }
 
   async search(payload: searchDto) {
-  
-    let query = Service.getRepository().createQueryBuilder("service")
+    const query = Service.getRepository().createQueryBuilder('service');
 
     if (payload.categoryName)
-      query.andWhere(`"categoryId" = :categoryId`, {categoryId: payload.categoryName})
+      query.andWhere(`"categoryId" = :categoryId`, {
+        categoryId: payload.categoryName,
+      });
 
     if (payload.destination)
-      query.andWhere(`plainto_tsquery('portuguese', :destination) @@ to_tsvector('portuguese', COALESCE(service.details->>'destination', service.details->'itinerary'->>'destination'))`, {destination: payload.destination})
-    
+      query.andWhere(
+        `plainto_tsquery('portuguese', :destination) @@ to_tsvector('portuguese', COALESCE(service.details->>'destination', service.details->'itinerary'->>'destination'))`,
+        { destination: payload.destination },
+      );
+
     if (payload.origin)
-      query.andWhere(`plainto_tsquery('portuguese', :origin) @@ to_tsvector('portuguese', COALESCE(service.details->>'origin', service.details->'itinerary'->>'origin'))`, {origin: payload.origin})
+      query.andWhere(
+        `plainto_tsquery('portuguese', :origin) @@ to_tsvector('portuguese', COALESCE(service.details->>'origin', service.details->'itinerary'->>'origin'))`,
+        { origin: payload.origin },
+      );
 
     if (payload.date)
-      query.andWhere(`(to_timestamp((details->>'tripStartDateTime')::integer) at time zone :timezone)::date = :startDate`, {timezone: payload.timezone, startDate: payload.date})
-    
-    let results = await query.getMany()
+      query.andWhere(
+        `(to_timestamp((details->>'tripStartDateTime')::integer) at time zone :timezone)::date = :startDate`,
+        { timezone: payload.timezone, startDate: payload.date },
+      );
+
+    const results = await query.getMany();
 
     return results;
   }
-
 }

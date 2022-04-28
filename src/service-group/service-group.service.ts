@@ -11,16 +11,18 @@ export class ServiceGroupService {
 
   async findAll() {
     const groups: ServiceGroup[] = await ServiceGroup.find({
-      relations: ['categories']
+      relations: ['categories'],
     });
-  
+
     return groups;
   }
 
   async findOne(id: string) {
     const group: ServiceGroup = await ServiceGroup.findOneOrFail(id, {
-      relations: ['categories']
-    }).catch(e => { throw new NotFoundException('No service group with such id') });
+      relations: ['categories'],
+    }).catch((e) => {
+      throw new NotFoundException('No service group with such id');
+    });
 
     return group;
   }

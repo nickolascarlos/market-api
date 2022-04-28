@@ -9,7 +9,15 @@ import { ServiceGroupModule } from './service-group/service-group.module';
 import { ServiceModule } from './service/service.module';
 
 @Module({
-  imports: [UserModule, ProviderModule, AuthModule, ConfigModule.forRoot(), ServiceCategoryModule, ServiceGroupModule, ServiceModule],
+  imports: [
+    UserModule,
+    ProviderModule,
+    AuthModule,
+    ConfigModule.forRoot(),
+    ServiceCategoryModule,
+    ServiceGroupModule,
+    ServiceModule,
+  ],
   controllers: [],
   providers: [],
 })

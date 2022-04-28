@@ -43,7 +43,7 @@ export class Provider extends BaseEntity {
   isPhoneWhatsapp: boolean;
 
   @OneToMany(() => Service, (service) => service.provider, {
-    cascade: ['remove']
+    cascade: ['remove'],
   })
   services: Service[];
 

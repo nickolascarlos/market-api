@@ -1,14 +1,19 @@
-import { Type } from "class-transformer";
-import { IsNotEmpty, IsNotEmptyObject, IsNumber, Validate, ValidateNested } from "class-validator";
-import { PlaceDto } from "./create-place.dto";
+import { Type } from 'class-transformer';
+import {
+  IsNotEmpty,
+  IsNotEmptyObject,
+  IsNumber,
+  ValidateNested,
+} from 'class-validator';
+import { PlaceDto } from './create-place.dto';
 
 export class StopDto {
-    @IsNotEmpty()
-    @IsNumber()
-    order: number;
+  @IsNotEmpty()
+  @IsNumber()
+  order: number;
 
-    @IsNotEmptyObject()
-    @ValidateNested()
-    @Type(() => PlaceDto)
-    place: PlaceDto;
+  @IsNotEmptyObject()
+  @ValidateNested()
+  @Type(() => PlaceDto)
+  place: PlaceDto;
 }

@@ -33,7 +33,7 @@ export class User extends BaseEntity {
   isPhoneWhatsApp: boolean;
 
   @OneToMany(() => Provider, (provider) => provider.user, {
-    cascade: ['remove']
+    cascade: ['remove'],
   })
   providers: Array<Provider>;
 

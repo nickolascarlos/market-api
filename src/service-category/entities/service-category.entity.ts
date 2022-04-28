@@ -1,25 +1,32 @@
-import { ServiceGroup } from "src/service-group/entities/service-group.entity";
-import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { ServiceGroup } from 'src/service-group/entities/service-group.entity';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryColumn,
+} from 'typeorm';
 
 @Entity('ServiceCategory')
 export class ServiceCategory extends BaseEntity {
-    @ManyToOne(() => ServiceGroup, (serviceGroup) => serviceGroup.categories, {
-        onDelete: 'SET NULL'
-    })
-    @JoinColumn({name: 'groupName'})
-    group: ServiceGroup;
+  @ManyToOne(() => ServiceGroup, (serviceGroup) => serviceGroup.categories, {
+    onDelete: 'SET NULL',
+  })
+  @JoinColumn({ name: 'groupName' })
+  group: ServiceGroup;
 
-    @Column()
-    displayName: String;
+  @Column()
+  displayName: string;
 
-    @Column()
-    icon: String;
+  @Column()
+  icon: string;
 
-    @PrimaryColumn()
-    apiName: String;
+  @PrimaryColumn()
+  apiName: string;
 
-    @Column("text", {
-        array: true,
-    })
-    alternativeNames: String[];
+  @Column('text', {
+    array: true,
+  })
+  alternativeNames: string[];
 }

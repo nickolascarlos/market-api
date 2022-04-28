@@ -1,5 +1,4 @@
 import {
-  Inject,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -11,17 +10,15 @@ import { Provider } from './entities/provider.entity';
 
 @Injectable()
 export class ProviderService {
-  constructor(
-    private readonly userService: UserService,
-  ) {}
+  constructor(private readonly userService: UserService) {}
 
   async create(payload: CreateProviderDto, userId: string) {
     const newProvider = new Provider();
-    console.log(userId)
+    console.log(userId);
     Object.assign(newProvider, {
-        ...payload,
-        userId
-      });
+      ...payload,
+      userId,
+    });
     await newProvider.save();
     delete newProvider.user;
     return newProvider;

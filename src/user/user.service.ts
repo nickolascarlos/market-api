@@ -1,4 +1,9 @@
-import { Inject, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { Repository } from 'typeorm';
 import * as crypto from 'crypto';
 
@@ -24,7 +29,11 @@ export class UserService {
     return newUser;
   }
 
-  async findUserProviders(loggedInUserId: string, offset: number = 0, limit: number = Infinity) {
+  async findUserProviders(
+    loggedInUserId: string,
+    offset = 0,
+    limit = Infinity,
+  ) {
     const loggedInUser: User = await this.findOne(loggedInUserId);
     return await Provider.find({
       where: {
@@ -62,29 +71,37 @@ export class UserService {
   }
 
   async changePassword(payload: updateUserPasswordDto, userId: string) {
-    
     // Verifica se currentPassword de fato corresponde à senha atual do usuário logado
-    let hashedCurrentPassword = crypto.createHash('sha256').update(payload.currentPassword).digest('hex');
-    let user: User = await User.findOne({
+    const hashedCurrentPassword = crypto
+      .createHash('sha256')
+      .update(payload.currentPassword)
+      .digest('hex');
+
+    const user: User = await User.findOne({
       where: {
         id: userId,
-        password: hashedCurrentPassword
-      }
-    })
+        password: hashedCurrentPassword,
+      },
+    });
 
     if (!user) {
-      throw new UnauthorizedException('The provided currentPassword does not match the actual current password')
+      throw new UnauthorizedException(
+        'The provided currentPassword does not match the actual current password',
+      );
     }
 
     // Se corresponder, atualiza a senha
-    let hashedNewPassword = crypto.createHash('sha256').update(payload.newPassword).digest('hex');
+    const hashedNewPassword = crypto
+      .createHash('sha256')
+      .update(payload.newPassword)
+      .digest('hex');
+
     await User.createQueryBuilder('user')
       .update()
-      .set({password: hashedNewPassword})
-      .where("id = :id", {id: userId})
-      .execute()
+      .set({ password: hashedNewPassword })
+      .where('id = :id', { id: userId })
+      .execute();
 
-    return 'updated'
+    return 'updated';
   }
-
 }

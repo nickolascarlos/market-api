@@ -1,17 +1,17 @@
-import { ServiceCategory } from "src/service-category/entities/service-category.entity";
-import { BaseEntity, Column, Entity, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { ServiceCategory } from 'src/service-category/entities/service-category.entity';
+import { BaseEntity, Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 
 @Entity('ServiceGroup')
 export class ServiceGroup extends BaseEntity {
-    @Column()
-    displayName: String;
+  @Column()
+  displayName: string;
 
-    @PrimaryColumn()
-    apiName: String;
+  @PrimaryColumn()
+  apiName: string;
 
-    @Column()
-    icon: String;
+  @Column()
+  icon: string;
 
-    @OneToMany(() => ServiceCategory, (serviceCategory) => serviceCategory.group)
-    categories: ServiceCategory[];
+  @OneToMany(() => ServiceCategory, (serviceCategory) => serviceCategory.group)
+  categories: ServiceCategory[];
 }

@@ -29,7 +29,11 @@ export class UserController {
   }
 
   @Get(':user_id/providers/:offset?/:limit?')
-  findUserProviders(@Param('user_id') userId: string, @Param('offset') offset = 0, @Param('limit') limit = 25) {
+  findUserProviders(
+    @Param('user_id') userId: string,
+    @Param('offset') offset = 0,
+    @Param('limit') limit = 25,
+  ) {
     return this.userService.findUserProviders(userId, +offset, +limit);
   }
 
@@ -49,14 +53,13 @@ export class UserController {
   @Delete()
   @UseGuards(JwtAuthGuard)
   remove(@Req() req) {
-    return this.userService.remove(req.user.userId)
+    return this.userService.remove(req.user.userId);
   }
 
   @Patch('change-password')
   @UsePipes(customValidationPipe)
   @UseGuards(JwtAuthGuard)
   changePassword(@Body() payload, @Req() req) {
-    return this.userService.changePassword(payload, req.user.userId)
+    return this.userService.changePassword(payload, req.user.userId);
   }
-
 }

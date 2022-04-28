@@ -1,4 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe, Req, UseGuards, ParseUUIDPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UsePipes,
+  Req,
+  UseGuards,
+  ParseUUIDPipe,
+} from '@nestjs/common';
 import { ServiceService } from './service.service';
 import { CreateServiceDto } from './dto/create-service.dto';
 import { UpdateServiceDto } from './dto/update-service.dto';
@@ -22,21 +34,25 @@ export class ServiceController {
   search(@Body() searchDto: searchDto) {
     return this.serviceService.search(searchDto);
   }
-  
+
   @Get(':id')
   findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.serviceService.findOne(id);
   }
-  
+
   @Get(':offset?/:limit?')
-  findAll(@Param('offset') offset: string = '0', @Param('limit') limit: string = '25') {
+  findAll(@Param('offset') offset = '0', @Param('limit') limit = '25') {
     return this.serviceService.findAll(+offset, +limit);
   }
 
   @Patch(':id')
   @UsePipes(customValidationPipe)
   @UseGuards(JwtAuthGuard)
-  update(@Param('id', ParseUUIDPipe) id: string, @Body() updateServiceDto: UpdateServiceDto, @Req() req) {
+  update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updateServiceDto: UpdateServiceDto,
+    @Req() req,
+  ) {
     return this.serviceService.update(id, updateServiceDto, req.user.userId);
   }
 

@@ -1,6 +1,5 @@
-import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { maxDate } from 'class-validator';
 import * as _ from 'lodash';
 
 import { User } from 'src/user/entities/user.entity';
@@ -23,18 +22,18 @@ export class AuthService {
       { secret: process.env.JWT_SECRET },
     );
 
-    let userData = await User.findOne(user.id, {
-      relations: ['providers']
+    const userData = await User.findOne(user.id, {
+      relations: ['providers'],
     });
 
     // Omite o campo user_id (redundantes) dos providers
     userData.providers = userData.providers.map((provider) => {
-      return _.omit(provider, ['user_id'])
-    })
+      return _.omit(provider, ['user_id']);
+    });
 
     return {
       token,
-      user: userData
+      user: userData,
     };
   }
 
@@ -52,7 +51,7 @@ export class AuthService {
   }
 
   async me(req) {
-    const me: User = await this.userService.findOne(req.user.userId)
+    const me: User = await this.userService.findOne(req.user.userId);
     return me;
   }
 }
