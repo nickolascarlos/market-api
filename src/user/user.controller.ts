@@ -17,6 +17,7 @@ import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { Req } from '@nestjs/common';
 import { customValidationPipe } from 'src/utilities';
+import { RoleGuard } from 'src/auth/guards/role.guard';
 
 @Controller('user')
 export class UserController {
@@ -38,8 +39,9 @@ export class UserController {
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseUUIDPipe) id: string) {
-    return this.userService.findOne(id);
+  @UseGuards(JwtAuthGuard)
+  findOne(@Param('id', ParseUUIDPipe) id: string, @Req() req) {
+    return this.userService.selfUserRestrictFindOne(id, req.user);
   }
 
   @Patch()
@@ -60,6 +62,6 @@ export class UserController {
   @UsePipes(customValidationPipe)
   @UseGuards(JwtAuthGuard)
   changePassword(@Body() payload, @Req() req) {
-    return this.userService.changePassword(payload, req.user.userId);
+    return this.userService.changePassword(payload, req.user);
   }
 }

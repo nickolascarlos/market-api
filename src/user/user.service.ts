@@ -1,10 +1,8 @@
 import {
-  Inject,
   Injectable,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { Repository } from 'typeorm';
 import * as crypto from 'crypto';
 
 import { CreateUserDto } from './dto/create-user.dto';
@@ -103,5 +101,18 @@ export class UserService {
       .execute();
 
     return 'updated';
+  }
+
+  // Esse método se diferencia de .findOne(...) por
+  // fazer uma verificação para permitir apenas que
+  // o próprio usuário (ou um administrador) acesse
+  // suas informações
+  async selfUserRestrictFindOne(id: string, user: any) {
+    const { userId, userRole } = user;
+
+    if (userId === id || userRole === 'admin') // eslint-disable-line
+      return await this.findOne(id);
+
+    throw new UnauthorizedException();
   }
 }
