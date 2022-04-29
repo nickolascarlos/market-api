@@ -17,5 +17,5 @@ export class CreateProviderDto {
   phoneNumber: string;
 
   @IsNotEmpty()
-  isPhoneWhatsapp: boolean;
+  isPhoneWhatsApp: boolean;
 }
