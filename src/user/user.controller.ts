@@ -62,6 +62,6 @@ export class UserController {
   @UsePipes(customValidationPipe)
   @UseGuards(JwtAuthGuard)
   changePassword(@Body() payload, @Req() req) {
-    return this.userService.changePassword(payload, req.user);
+    return this.userService.changePassword(payload, req.user.userId);
   }
 }
