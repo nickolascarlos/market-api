@@ -16,6 +16,9 @@ export class ServiceCategory extends BaseEntity {
   @JoinColumn({ name: 'groupName' })
   group: ServiceGroup;
 
+  @Column({ nullable: false, default: 'no-group' })
+  groupName: string;
+
   @Column()
   displayName: string;
 

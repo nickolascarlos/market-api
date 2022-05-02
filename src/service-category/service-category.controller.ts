@@ -46,13 +46,13 @@ export class ServiceCategoryController {
     @Param('id') id: string,
     @Body() updateServiceCategoryDto: UpdateServiceCategoryDto,
   ) {
-    return this.serviceCategoryService.update(+id, updateServiceCategoryDto);
+    return this.serviceCategoryService.update(id, updateServiceCategoryDto);
   }
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Roles('admin')
   remove(@Param('id') id: string) {
-    return this.serviceCategoryService.remove(+id);
+    return this.serviceCategoryService.remove(id);
   }
 }

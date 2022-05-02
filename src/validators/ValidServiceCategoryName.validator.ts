@@ -20,6 +20,6 @@ export default class ValidServiceCategoryName
   }
 
   defaultMessage(args: ValidationArguments) {
-    return `No such service category with id ${args.object['categoryId']}`;
+    return `No such service category with id ${args.object['categoryName']}`;
   }
 }

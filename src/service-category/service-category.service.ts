@@ -5,8 +5,11 @@ import { ServiceCategory } from './entities/service-category.entity';
 
 @Injectable()
 export class ServiceCategoryService {
-  create(createServiceCategoryDto: CreateServiceCategoryDto) {
-    return 'ADMIN ACTION - This action adds a new serviceCategory';
+  async create(payload: CreateServiceCategoryDto) {
+    const newServiceCategory: ServiceCategory = new ServiceCategory();
+    Object.assign(newServiceCategory, payload);
+    await ServiceCategory.insert(newServiceCategory);
+    return await ServiceCategory.findOne(newServiceCategory.apiName);
   }
 
   async findAll() {
@@ -27,11 +30,15 @@ export class ServiceCategoryService {
     return category;
   }
 
-  update(id: number, updateServiceCategoryDto: UpdateServiceCategoryDto) {
-    return `ADMIN ACTION - This action updates a #${id} serviceCategory`;
+  async update(id: string, payload: UpdateServiceCategoryDto) {
+    const serviceCategory: ServiceCategory = await this.findOne(id);
+    Object.assign(serviceCategory, payload);
+    await serviceCategory.save();
+    return await this.findOne(id);
   }
 
-  remove(id: number) {
-    return `ADMIN ACTION - This action removes a #${id} serviceCategory`;
+  async remove(id: string) {
+    const serviceCategory: ServiceCategory = await this.findOne(id);
+    return await serviceCategory.remove();
   }
 }
