@@ -9,7 +9,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { Provider } from 'src/provider/entities/provider.entity';
-import { updateUserPasswordDto } from './dto/update-password.dto';
+import { UpdateUserPasswordDto } from './dto/update-password.dto';
 
 @Injectable()
 export class UserService {
@@ -69,7 +69,7 @@ export class UserService {
   }
 
   async changePassword(
-    payload: updateUserPasswordDto,
+    payload: UpdateUserPasswordDto,
     userId: string,
     adminAction = false,
   ) {
