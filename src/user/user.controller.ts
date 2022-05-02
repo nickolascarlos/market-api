@@ -18,6 +18,7 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { Req } from '@nestjs/common';
 import { customValidationPipe } from 'src/utilities';
 import { RoleGuard } from 'src/auth/guards/role.guard';
+import { updateUserPasswordDto } from './dto/update-password.dto';
 
 @Controller('user')
 export class UserController {
@@ -61,7 +62,7 @@ export class UserController {
   @Patch('change-password')
   @UsePipes(customValidationPipe)
   @UseGuards(JwtAuthGuard)
-  changePassword(@Body() payload, @Req() req) {
+  changePassword(@Body() payload: updateUserPasswordDto, @Req() req) {
     return this.userService.changePassword(payload, req.user.userId);
   }
 }
