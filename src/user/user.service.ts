@@ -68,27 +68,36 @@ export class UserService {
     });
   }
 
-  async changePassword(payload: updateUserPasswordDto, userId: string) {
-    // Verifica se currentPassword de fato corresponde à senha atual do usuário logado
-    const hashedCurrentPassword = crypto
-      .createHash('sha256')
-      .update(payload.currentPassword)
-      .digest('hex');
+  async changePassword(
+    payload: updateUserPasswordDto,
+    userId: string,
+    adminAction = false,
+  ) {
+    // Se não for uma solicitação de um administrador,
+    // as seguintes verificações devem ser feitas
+    if (!adminAction) {
+      // Verifica se currentPassword de fato corresponde à senha atual do usuário logado
+      const hashedCurrentPassword = crypto
+        .createHash('sha256')
+        .update(payload.currentPassword)
+        .digest('hex');
 
-    const user: User = await User.findOne({
-      where: {
-        id: userId,
-        password: hashedCurrentPassword,
-      },
-    });
+      const user: User = await User.findOne({
+        where: {
+          id: userId,
+          password: hashedCurrentPassword,
+        },
+      });
 
-    if (!user) {
-      throw new UnauthorizedException(
-        'The provided currentPassword does not match the actual current password',
-      );
+      if (!user) {
+        throw new UnauthorizedException(
+          'The provided currentPassword does not match the actual current password',
+        );
+      }
     }
 
-    // Se corresponder, atualiza a senha
+    // Se as senhas corresponderem (ou for uma solicitação
+    // do administrador), atualiza a senha
     const hashedNewPassword = crypto
       .createHash('sha256')
       .update(payload.newPassword)

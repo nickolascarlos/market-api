@@ -7,6 +7,8 @@ import { ProviderModule } from './provider/provider.module';
 import { ServiceCategoryModule } from './service-category/service-category.module';
 import { ServiceGroupModule } from './service-group/service-group.module';
 import { ServiceModule } from './service/service.module';
+import { AdminModule } from './admin/admin.module';
+import { RouterModule } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -17,6 +19,13 @@ import { ServiceModule } from './service/service.module';
     ServiceCategoryModule,
     ServiceGroupModule,
     ServiceModule,
+    AdminModule,
+    RouterModule.register([
+      {
+        path: 'admin',
+        module: AdminModule,
+      },
+    ]),
   ],
   controllers: [],
   providers: [],
