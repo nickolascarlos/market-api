@@ -16,19 +16,17 @@ import { searchDto } from './dto/search.dto';
 export class ServiceService {
   constructor(private readonly providerService: ProviderService) {}
 
-  async create(payload: CreateServiceDto, userId: string) {
-    // Verifica se o provider especificado
-    // pertence ao usuário logado
-    await this.providerService.findOneFromUser(payload.providerId, userId);
+  async create(payload: CreateServiceDto, userId: string, adminAction = false) {
+    if (!adminAction) {
+      // Verifica se o provider especificado
+      // pertence ao usuário logado
+      await this.providerService.findOneFromUser(payload.providerId, userId);
+    }
 
     const service: Service = new Service();
     Object.assign(service, payload);
-    try {
-      return await service.save();
-    } catch (e) {
-      console.log("Nobody knows the way it's going to be");
-      console.log(e);
-    }
+    await Service.insert(service);
+    return service;
   }
 
   async findAll(offset: number, limit: number) {
@@ -55,8 +53,15 @@ export class ServiceService {
     return service;
   }
 
-  async update(id: string, payload: UpdateServiceDto, userId: string) {
-    const service: Service = await this.findOneFromUser(id, userId);
+  async update(
+    id: string,
+    payload: UpdateServiceDto,
+    userId: string,
+    adminAction = false,
+  ) {
+    const service: Service = !adminAction
+      ? await this.findOneFromUser(id, userId)
+      : await this.findOne(id);
 
     // Omite a chave category para evitar problemas
     // com a atualização, já que a categoria só é
@@ -70,14 +75,14 @@ export class ServiceService {
     return await service.save();
   }
 
-  async remove(id: string, userId: string) {
-    const service: Service = await this.findOneFromUser(id, userId);
-
+  async remove(id: string, userId: string, adminAction = false) {
     // Se o serviço não pertencer ao usuário logado,
     // uma exceção será lançada
+    const service: Service = !adminAction
+      ? await this.findOneFromUser(id, userId)
+      : await this.findOne(id);
 
     await service.remove();
-
     return 'removed';
   }
 

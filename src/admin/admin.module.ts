@@ -10,6 +10,8 @@ import { ServiceGroupController } from './service-group.controller';
 import { ServiceGroupService } from 'src/service-group/service-group.service';
 import { ProviderController } from './provider.controller';
 import { ProviderService } from 'src/provider/provider.service';
+import { ServiceController } from './service.controller';
+import { ServiceService } from 'src/service/service.service';
 
 @Module({
   controllers: [
@@ -17,12 +19,14 @@ import { ProviderService } from 'src/provider/provider.service';
     ServiceCategoryController,
     ServiceGroupController,
     ProviderController,
+    ServiceController,
   ],
   providers: [
     UserService,
     ServiceCategoryService,
     ServiceGroupService,
     ProviderService,
+    ServiceService,
   ],
 })
 export class AdminModule {}
