@@ -39,6 +39,7 @@ export class ServiceGroupService {
 
   async remove(id: string) {
     const serviceGroup: ServiceGroup = await this.findOne(id);
-    return await serviceGroup.remove();
+    await serviceGroup.remove();
+    return 'removed';
   }
 }

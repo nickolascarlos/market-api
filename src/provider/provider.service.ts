@@ -63,7 +63,8 @@ export class ProviderService {
       ? await this.findOneFromUser(id, loggedInUserId)
       : await this.findOne(id);
 
-    return await provider.remove();
+    await provider.remove();
+    return 'removed';
   }
 
   async findOneFromUser(providerId: string, loggedInUserId: string) {
