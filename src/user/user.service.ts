@@ -42,6 +42,13 @@ export class UserService {
     });
   }
 
+  findAll(offset: number, limit: number) {
+    return User.find({
+      skip: offset,
+      take: limit,
+    });
+  }
+
   findOne(id: string) {
     return User.findOneOrFail(id).catch(() => {
       throw new NotFoundException('User not found');

@@ -15,12 +15,20 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { RoleGuard } from 'src/auth/guards/role.guard';
 import { Roles } from 'src/decorators/roles.decorator';
 import { UpdateUserDto } from 'src/user/dto/update-user.dto';
+import { User } from 'src/user/entities/user.entity';
 import { UserService } from 'src/user/user.service';
 import { customValidationPipe } from 'src/utilities';
 
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
+
+  @Get(':offset?/:limit?')
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @Roles('admin')
+  findAll(@Param('offset') offset = 0, @Param('limit') limit = 25) {
+    return this.userService.findAll(offset, limit);
+  }
 
   @Get(':user_id')
   @UseGuards(JwtAuthGuard, RoleGuard)
