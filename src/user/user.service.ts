@@ -49,8 +49,10 @@ export class UserService {
     });
   }
 
-  findOne(id: string) {
-    return User.findOneOrFail(id).catch(() => {
+  findOne(id: string, includeProviders = false) {
+    return User.findOneOrFail(id, {
+      relations: [...(includeProviders ? ['providers'] : [])],
+    }).catch(() => {
       throw new NotFoundException('User not found');
     });
   }
@@ -127,7 +129,7 @@ export class UserService {
     const { userId, userRole } = user;
 
     if (userId === id || userRole === 'admin') // eslint-disable-line
-      return await this.findOne(id);
+      return await this.findOne(id, true);
 
     throw new UnauthorizedException();
   }
