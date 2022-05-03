@@ -5,8 +5,11 @@ import { ServiceGroup } from './entities/service-group.entity';
 
 @Injectable()
 export class ServiceGroupService {
-  create(createServiceGroupDto: CreateServiceGroupDto) {
-    return 'ADMIN ACTION - This action adds a new serviceGroup';
+  async create(payload: CreateServiceGroupDto) {
+    const newServiceGroup: ServiceGroup = new ServiceGroup();
+    Object.assign(newServiceGroup, payload);
+    await ServiceGroup.insert(newServiceGroup);
+    return await this.findOne(newServiceGroup.apiName);
   }
 
   async findAll() {
@@ -27,11 +30,15 @@ export class ServiceGroupService {
     return group;
   }
 
-  update(id: number, updateServiceGroupDto: UpdateServiceGroupDto) {
-    return `ADMIN ACTION - This action updates a #${id} serviceGroup`;
+  async update(id: string, payload: UpdateServiceGroupDto) {
+    const serviceGroup: ServiceGroup = await this.findOne(id);
+    Object.assign(serviceGroup, payload);
+    await serviceGroup.save();
+    return await this.findOne(id);
   }
 
-  remove(id: number) {
-    return `ADMIN ACTION - This action removes a #${id} serviceGroup`;
+  async remove(id: string) {
+    const serviceGroup: ServiceGroup = await this.findOne(id);
+    return await serviceGroup.remove();
   }
 }

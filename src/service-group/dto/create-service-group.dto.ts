@@ -1,1 +1,14 @@
-export class CreateServiceGroupDto {}
+import { IsNotEmpty, Validate } from 'class-validator';
+import ApiNameNotInUse_ServiceGroup from 'src/validators/ApiNameNotInUse_ServiceGroupvalidator';
+
+export class CreateServiceGroupDto {
+  @IsNotEmpty()
+  displayName: string;
+
+  @IsNotEmpty()
+  icon: string;
+
+  @IsNotEmpty()
+  @Validate(ApiNameNotInUse_ServiceGroup)
+  apiName: string;
+}
