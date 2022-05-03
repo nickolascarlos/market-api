@@ -1,10 +1,12 @@
 import { ServiceGroup } from 'src/service-group/entities/service-group.entity';
+import { Service } from 'src/service/entities/service.entity';
 import {
   BaseEntity,
   Column,
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryColumn,
 } from 'typeorm';
 
@@ -16,7 +18,7 @@ export class ServiceCategory extends BaseEntity {
   @JoinColumn({ name: 'groupName' })
   group: ServiceGroup;
 
-  @Column({ nullable: false, default: 'none' })
+  @Column()
   groupName: string;
 
   @Column()
@@ -27,6 +29,11 @@ export class ServiceCategory extends BaseEntity {
 
   @PrimaryColumn()
   apiName: string;
+
+  @OneToMany(() => Service, (service) => service.category, {
+    cascade: ['remove'],
+  })
+  services: Service[];
 
   @Column('text', {
     array: true,

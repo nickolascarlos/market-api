@@ -25,7 +25,9 @@ export class Service extends BaseEntity {
   @Column({ nullable: true })
   providerId: string;
 
-  @ManyToOne(() => ServiceCategory)
+  @ManyToOne(() => ServiceCategory, {
+    onDelete: 'SET NULL',
+  })
   @JoinColumn({ name: 'categoryName' })
   category: ServiceCategory;
 
