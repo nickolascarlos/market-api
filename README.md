@@ -23,12 +23,12 @@ O cérebro da [moblit.app](https://moblit.app)
 ## Afazeres
 
 ### Funcionalidades
-- [ ] Implementar rotas de administrador
+- [x] ~Implementar rotas de administrador~
 - [ ] Implementar o envio de email para redefinição de senha
 
 ### Ferramentas
 - [ ] Implementar testes
-- [ ] Criar workflow para deploy no Heroku
+- [x] ~Criar workflow para deploy no Heroku~
 - [ ] Implementar logging
 - [ ] Criar a documentação da API
 
