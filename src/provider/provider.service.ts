@@ -3,6 +3,7 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
+import { off } from 'process';
 import { UserService } from 'src/user/user.service';
 import { CreateProviderDto } from './dto/create-provider.dto';
 import { UpdateProviderDto } from './dto/update-provider.dto';
@@ -24,8 +25,11 @@ export class ProviderService {
     return newProvider;
   }
 
-  findAll() {
-    return `This action returns all provider`;
+  findAll(offset: number, limit: number) {
+    return Provider.find({
+      skip: offset,
+      take: limit,
+    });
   }
 
   findOne(id: string) {
@@ -34,22 +38,30 @@ export class ProviderService {
     });
   }
 
-  async update(id: string, payload: UpdateProviderDto, loggedInUserId: string) {
+  async update(
+    id: string,
+    payload: UpdateProviderDto,
+    loggedInUserId: string,
+    adminAction = false,
+  ) {
     const provider = await this.findOne(id);
 
-    // Make sure Provider belongs to logged-in user
-    if (provider.userId !== loggedInUserId)
-      throw new UnauthorizedException(
-        'Provider does not belong to logged-in user',
-      );
+    if (!adminAction) {
+      // Make sure Provider belongs to logged-in user
+      if (provider.userId !== loggedInUserId)
+        throw new UnauthorizedException(
+          'Provider does not belong to logged-in user',
+        );
+    }
 
     Object.assign(provider, payload);
-
     return await provider.save();
   }
 
-  async remove(id: string, loggedInUserId: string) {
-    const provider = await this.findOneFromUser(id, loggedInUserId);
+  async remove(id: string, loggedInUserId: string, adminAction = false) {
+    const provider = !adminAction
+      ? await this.findOneFromUser(id, loggedInUserId)
+      : await this.findOne(id);
 
     return await provider.remove();
   }

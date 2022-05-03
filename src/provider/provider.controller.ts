@@ -29,11 +29,6 @@ export class ProviderController {
     return this.providerService.create(createProviderDto, userId);
   }
 
-  @Get()
-  findAll() {
-    return this.providerService.findAll();
-  }
-
   @Get(':id')
   findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.providerService.findOne(id);
