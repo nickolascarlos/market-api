@@ -120,17 +120,4 @@ export class UserService {
 
     return 'updated';
   }
-
-  // Esse método se diferencia de .findOne(...) por
-  // fazer uma verificação para permitir apenas que
-  // o próprio usuário (ou um administrador) acesse
-  // suas informações
-  async selfUserRestrictFindOne(id: string, user: any) {
-    const { userId, userRole } = user;
-
-    if (userId === id || userRole === 'admin') // eslint-disable-line
-      return await this.findOne(id, true);
-
-    throw new UnauthorizedException();
-  }
 }

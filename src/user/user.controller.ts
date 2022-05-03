@@ -38,10 +38,10 @@ export class UserController {
     return this.userService.findUserProviders(userId, +offset, +limit);
   }
 
-  @Get(':id')
+  @Get()
   @UseGuards(JwtAuthGuard)
-  findOne(@Param('id', ParseUUIDPipe) id: string, @Req() req) {
-    return this.userService.selfUserRestrictFindOne(id, req.user);
+  findOne(@Req() req) {
+    return this.userService.findOne(req.user.userId, true);
   }
 
   @Patch()
