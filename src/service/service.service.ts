@@ -32,6 +32,7 @@ export class ServiceService {
   async findAll(offset: number, limit: number) {
     // Todo: Implementar paginação
     const services: Service[] = await Service.find({
+      relations: ['category'],
       skip: offset,
       take: limit,
     });

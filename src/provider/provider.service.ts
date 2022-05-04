@@ -33,7 +33,9 @@ export class ProviderService {
   }
 
   findOne(id: string) {
-    return Provider.findOneOrFail(id).catch(() => {
+    return Provider.findOneOrFail(id, {
+      relations: ['services', 'services.category'],
+    }).catch(() => {
       throw new NotFoundException('No provider with such id');
     });
   }
