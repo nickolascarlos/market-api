@@ -64,4 +64,9 @@ export class UserController {
   changePassword(@Body() payload: UpdateUserPasswordDto, @Req() req) {
     return this.userService.changePassword(payload, req.user.userId);
   }
+
+  @Get('check-email-availability/:email')
+  checkEmailAvailability(@Param('email') email) {
+    return this.userService.checkEmailAvailability(email);
+  }
 }

@@ -12,3 +12,10 @@ export const customValidationPipe = new ValidationPipe({
   },
   exceptionFactory: (errors) => new BadRequestException(errors),
 });
+
+export const validateEmail = (email) => {
+  return !!String(email)
+    .toLowerCase()
+    // eslint-disable-next-line prettier/prettier
+    .match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+};

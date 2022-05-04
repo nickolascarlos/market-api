@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -10,6 +11,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { Provider } from 'src/provider/entities/provider.entity';
 import { UpdateUserPasswordDto } from './dto/update-password.dto';
+import { validateEmail } from 'src/utilities';
 
 @Injectable()
 export class UserService {
@@ -119,5 +121,21 @@ export class UserService {
       .execute();
 
     return 'updated';
+  }
+
+  async checkEmailAvailability(email: string) {
+    // Verifica se se trata de um email válido
+    if (!validateEmail(email))
+      throw new BadRequestException('Provided email is not valid');
+
+    const user: User = await User.findOne({
+      where: {
+        email: email,
+      },
+    });
+
+    return {
+      available: !user,
+    };
   }
 }
