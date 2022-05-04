@@ -38,7 +38,7 @@ export class CreateServiceDetailsDto {
   workingDays: WeekDay[];
 
   @IsOptional()
-  @IsString()
+  @IsBoolean()
   hasAssistant: boolean;
 
   @IsOptional()
