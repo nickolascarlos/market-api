@@ -23,18 +23,18 @@ import { customValidationPipe } from 'src/utilities';
 export class UserController {
   constructor(private userService: UserService) {}
 
-  @Get(':offset?/:limit?')
-  @UseGuards(JwtAuthGuard, RoleGuard)
-  @Roles('admin')
-  findAll(@Param('offset') offset = 0, @Param('limit') limit = 25) {
-    return this.userService.findAll(+offset, +limit);
-  }
-
   @Get(':user_id')
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Roles('admin')
   findOne(@Param('user_id', ParseUUIDPipe) userId) {
     return this.userService.findOne(userId);
+  }
+
+  @Get(':offset?/:limit?')
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @Roles('admin')
+  findAll(@Param('offset') offset = 0, @Param('limit') limit = 25) {
+    return this.userService.findAll(+offset, +limit);
   }
 
   @Patch(':user_id')
