@@ -27,7 +27,7 @@ export class UserController {
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Roles('admin')
   findAll(@Param('offset') offset = 0, @Param('limit') limit = 25) {
-    return this.userService.findAll(offset, limit);
+    return this.userService.findAll(+offset, +limit);
   }
 
   @Get(':user_id')

@@ -34,7 +34,7 @@ export class ProviderController {
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Roles('admin')
   findAll(@Param('offset') offset = 0, @Param('limit') limit = 25) {
-    return this.providerService.findAll(offset, limit);
+    return this.providerService.findAll(+offset, +limit);
   }
 
   @Patch(':provider_id')
