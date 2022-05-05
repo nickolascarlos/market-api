@@ -39,4 +39,7 @@ export class ServiceCategory extends BaseEntity {
     array: true,
   })
   alternativeNames: string[];
+
+  @Column({ default: '' })
+  description: string;
 }

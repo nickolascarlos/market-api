@@ -1,4 +1,10 @@
-import { IsArray, IsNotEmpty, IsString, Validate } from 'class-validator';
+import {
+  IsArray,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  Validate,
+} from 'class-validator';
 import ApiNameNotInUse_ServiceCategory from 'src/validators/ApiNameNotInUse_ServiceCategory.validator';
 import ValidServiceGroupName from 'src/validators/ValidServiceGroupName.validator';
 
@@ -21,4 +27,8 @@ export class CreateServiceCategoryDto {
   @IsNotEmpty()
   @Validate(ValidServiceGroupName)
   groupName: string;
+
+  @IsOptional()
+  @IsString()
+  description: string;
 }

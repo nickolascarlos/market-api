@@ -14,4 +14,7 @@ export class ServiceGroup extends BaseEntity {
 
   @OneToMany(() => ServiceCategory, (serviceCategory) => serviceCategory.group)
   categories: ServiceCategory[];
+
+  @Column({ default: '' })
+  description: string;
 }
