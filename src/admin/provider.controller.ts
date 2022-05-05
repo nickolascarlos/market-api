@@ -18,7 +18,7 @@ import { UpdateProviderDto } from 'src/provider/dto/update-provider.dto';
 import { ProviderService } from 'src/provider/provider.service';
 import { customValidationPipe } from 'src/utilities';
 
-@Controller('provider')
+@Controller('providers')
 export class ProviderController {
   constructor(private providerService: ProviderService) {}
 

@@ -17,7 +17,7 @@ import { UpdateServiceDto } from 'src/service/dto/update-service.dto';
 import { ServiceService } from 'src/service/service.service';
 import { customValidationPipe } from 'src/utilities';
 
-@Controller('service')
+@Controller('services')
 export class ServiceController {
   constructor(private serviceService: ServiceService) {}
 

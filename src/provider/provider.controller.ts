@@ -17,7 +17,7 @@ import { UpdateProviderDto } from './dto/update-provider.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { customValidationPipe } from 'src/utilities';
 
-@Controller('provider')
+@Controller('providers')
 export class ProviderController {
   constructor(private readonly providerService: ProviderService) {}
 

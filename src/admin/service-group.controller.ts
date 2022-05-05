@@ -11,14 +11,12 @@ import {
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { RoleGuard } from 'src/auth/guards/role.guard';
 import { Roles } from 'src/decorators/roles.decorator';
-import { CreateServiceCategoryDto } from 'src/service-category/dto/create-service-category.dto';
-import { UpdateServiceCategoryDto } from 'src/service-category/dto/update-service-category.dto';
 import { CreateServiceGroupDto } from 'src/service-group/dto/create-service-group.dto';
 import { UpdateServiceGroupDto } from 'src/service-group/dto/update-service-group.dto';
 import { ServiceGroupService } from 'src/service-group/service-group.service';
 import { customValidationPipe } from 'src/utilities';
 
-@Controller('service-group')
+@Controller('service-groups')
 export class ServiceGroupController {
   constructor(private serviceGroupService: ServiceGroupService) {}
 

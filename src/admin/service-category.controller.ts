@@ -17,7 +17,7 @@ import { UpdateServiceCategoryDto } from 'src/service-category/dto/update-servic
 import { ServiceCategoryService } from 'src/service-category/service-category.service';
 import { customValidationPipe } from 'src/utilities';
 
-@Controller('service-category')
+@Controller('service-categories')
 export class ServiceCategoryController {
   constructor(private serviceCategoryService: ServiceCategoryService) {}
 

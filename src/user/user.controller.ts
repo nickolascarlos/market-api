@@ -19,7 +19,7 @@ import { customValidationPipe } from 'src/utilities';
 import { RoleGuard } from 'src/auth/guards/role.guard';
 import { UpdateUserPasswordDto } from './dto/update-password.dto';
 
-@Controller('user')
+@Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 

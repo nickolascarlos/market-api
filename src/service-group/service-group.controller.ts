@@ -1,7 +1,7 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { ServiceGroupService } from './service-group.service';
 
-@Controller('service-group')
+@Controller('service-groups')
 export class ServiceGroupController {
   constructor(private readonly serviceGroupService: ServiceGroupService) {}
 
