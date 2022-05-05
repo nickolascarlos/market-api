@@ -5,7 +5,6 @@ export const customValidationPipe = new ValidationPipe({
   forbidNonWhitelisted: true,
   forbidUnknownValues: true,
   transform: true,
-  stopAtFirstError: true,
   validationError: {
     target: false,
     value: false,
