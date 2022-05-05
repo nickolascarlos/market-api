@@ -14,6 +14,7 @@ import {
 export class ServiceCategory extends BaseEntity {
   @ManyToOne(() => ServiceGroup, (serviceGroup) => serviceGroup.categories, {
     onDelete: 'SET NULL',
+    onUpdate: 'CASCADE',
   })
   @JoinColumn({ name: 'groupName' })
   group: ServiceGroup;
@@ -31,7 +32,7 @@ export class ServiceCategory extends BaseEntity {
   apiName: string;
 
   @OneToMany(() => Service, (service) => service.category, {
-    cascade: ['remove'],
+    cascade: ['remove', 'update'],
   })
   services: Service[];
 

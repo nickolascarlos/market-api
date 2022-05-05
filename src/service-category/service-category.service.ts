@@ -33,8 +33,9 @@ export class ServiceCategoryService {
   async update(id: string, payload: UpdateServiceCategoryDto) {
     const serviceCategory: ServiceCategory = await this.findOne(id);
     Object.assign(serviceCategory, payload);
-    await serviceCategory.save();
-    return await this.findOne(id);
+    await ServiceCategory.update(id, payload);
+    delete serviceCategory.group;
+    return serviceCategory;
   }
 
   async remove(id: string) {

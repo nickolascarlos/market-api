@@ -12,7 +12,13 @@ export class ServiceGroup extends BaseEntity {
   @Column()
   icon: string;
 
-  @OneToMany(() => ServiceCategory, (serviceCategory) => serviceCategory.group)
+  @OneToMany(
+    () => ServiceCategory,
+    (serviceCategory) => serviceCategory.group,
+    {
+      cascade: ['remove', 'update'],
+    },
+  )
   categories: ServiceCategory[];
 
   @Column({ default: '' })

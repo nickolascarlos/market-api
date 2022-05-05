@@ -2,5 +2,5 @@ import { OmitType, PartialType } from '@nestjs/mapped-types';
 import { CreateServiceCategoryDto } from './create-service-category.dto';
 
 export class UpdateServiceCategoryDto extends PartialType(
-  OmitType(CreateServiceCategoryDto, ['apiName']),
+  OmitType(CreateServiceCategoryDto, []),
 ) {}

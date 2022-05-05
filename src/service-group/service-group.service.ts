@@ -33,8 +33,9 @@ export class ServiceGroupService {
   async update(id: string, payload: UpdateServiceGroupDto) {
     const serviceGroup: ServiceGroup = await this.findOne(id);
     Object.assign(serviceGroup, payload);
-    await serviceGroup.save();
-    return await this.findOne(id);
+    await ServiceGroup.update(id, payload);
+    delete serviceGroup.categories;
+    return serviceGroup;
   }
 
   async remove(id: string) {

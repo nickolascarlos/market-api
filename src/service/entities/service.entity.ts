@@ -27,6 +27,7 @@ export class Service extends BaseEntity {
 
   @ManyToOne(() => ServiceCategory, {
     onDelete: 'SET NULL',
+    onUpdate: 'CASCADE',
   })
   @JoinColumn({ name: 'categoryName' })
   category: ServiceCategory;
