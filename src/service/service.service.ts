@@ -9,12 +9,17 @@ import { UpdateServiceDto } from './dto/update-service.dto';
 import { Service } from './entities/service.entity';
 import * as _ from 'lodash';
 import { result } from 'lodash';
-import { Like } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { searchDto } from './dto/search.dto';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class ServiceService {
-  constructor(private readonly providerService: ProviderService) {}
+  constructor(
+    @InjectRepository(Service)
+    private readonly serviceRepository: Repository<Service>,
+    private readonly providerService: ProviderService,
+  ) {}
 
   async create(payload: CreateServiceDto, userId: string, adminAction = false) {
     if (!adminAction) {

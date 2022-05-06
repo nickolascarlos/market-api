@@ -3,7 +3,6 @@ import {
   Controller,
   Delete,
   Param,
-  ParseUUIDPipe,
   Patch,
   Post,
   UseGuards,

@@ -1,10 +1,17 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateServiceGroupDto } from './dto/create-service-group.dto';
 import { UpdateServiceGroupDto } from './dto/update-service-group.dto';
 import { ServiceGroup } from './entities/service-group.entity';
 
 @Injectable()
 export class ServiceGroupService {
+  constructor(
+    @InjectRepository(ServiceGroup)
+    private readonly serviceGroupRepository: Repository<ServiceGroup>,
+  ) {}
+
   async create(payload: CreateServiceGroupDto) {
     const newServiceGroup: ServiceGroup = new ServiceGroup();
     Object.assign(newServiceGroup, payload);

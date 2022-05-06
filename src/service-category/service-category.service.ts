@@ -1,10 +1,17 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateServiceCategoryDto } from './dto/create-service-category.dto';
 import { UpdateServiceCategoryDto } from './dto/update-service-category.dto';
 import { ServiceCategory } from './entities/service-category.entity';
 
 @Injectable()
 export class ServiceCategoryService {
+  constructor(
+    @InjectRepository(ServiceCategory)
+    private readonly serviceCategoryRepository: Repository<ServiceCategory>,
+  ) {}
+
   async create(payload: CreateServiceCategoryDto) {
     const newServiceCategory: ServiceCategory = new ServiceCategory();
     Object.assign(newServiceCategory, payload);

@@ -15,10 +15,16 @@ import { validateEmail } from 'src/utilities';
 import { RequestPasswordChangeDto } from './dto/request-password-change.dto';
 import { PasswordChangeToken } from './entities/password-change-token.entity';
 import { MailService } from 'src/mail/mail.service';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly mailService: MailService) {}
+  constructor(
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+    private readonly mailService: MailService,
+  ) {}
 
   async create(payload: CreateUserDto) {
     const newUser = new User();
