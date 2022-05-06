@@ -9,13 +9,16 @@ import { ServiceGroupModule } from './service-group/service-group.module';
 import { ServiceModule } from './service/service.module';
 import { AdminModule } from './admin/admin.module';
 import { RouterModule } from '@nestjs/core';
+import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
     UserModule,
     ProviderModule,
     AuthModule,
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     ServiceCategoryModule,
     ServiceGroupModule,
     ServiceModule,
@@ -26,6 +29,7 @@ import { RouterModule } from '@nestjs/core';
         module: AdminModule,
       },
     ]),
+    MailModule,
   ],
   controllers: [],
   providers: [],

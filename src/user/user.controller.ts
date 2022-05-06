@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UsePipes,
+  HttpCode,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -18,6 +19,7 @@ import { Req } from '@nestjs/common';
 import { customValidationPipe } from 'src/utilities';
 import { RoleGuard } from 'src/auth/guards/role.guard';
 import { UpdateUserPasswordDto } from './dto/update-password.dto';
+import { RequestPasswordChangeDto } from './dto/request-password-change.dto';
 
 @Controller('users')
 export class UserController {
@@ -60,9 +62,15 @@ export class UserController {
 
   @Patch('change-password')
   @UsePipes(customValidationPipe)
-  @UseGuards(JwtAuthGuard)
-  changePassword(@Body() payload: UpdateUserPasswordDto, @Req() req) {
-    return this.userService.changePassword(payload, req.user.userId);
+  changePassword(@Body() payload: UpdateUserPasswordDto) {
+    return this.userService.changePassword(payload);
+  }
+
+  @Post('request-password-change')
+  @UsePipes(customValidationPipe)
+  @HttpCode(200)
+  requestPasswordChange(@Body() payload: RequestPasswordChangeDto) {
+    return this.userService.requestPasswordChange(payload);
   }
 
   @Get('check-email-availability/:email')
