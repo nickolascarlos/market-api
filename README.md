@@ -24,7 +24,7 @@ O cérebro da [moblit.app](https://moblit.app)
 
 ### Funcionalidades
 - [x] ~Implementar rotas de administrador~
-- [ ] Implementar o envio de email para redefinição de senha
+- [x] ~Implementar o envio de email para redefinição de senha~
 - [ ] Implementar tradução de erros
 
 ### Ferramentas
