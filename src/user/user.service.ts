@@ -2,7 +2,6 @@ import {
   BadRequestException,
   Injectable,
   NotFoundException,
-  UnauthorizedException,
 } from '@nestjs/common';
 import * as crypto from 'crypto';
 
@@ -11,7 +10,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { Provider } from 'src/provider/entities/provider.entity';
 import { UpdateUserPasswordDto } from './dto/update-password.dto';
-import { validateEmail } from 'src/utilities';
+import { isNotExpired, validateEmail } from 'src/utilities';
 import { RequestPasswordChangeDto } from './dto/request-password-change.dto';
 import { PasswordChangeToken } from './entities/password-change-token.entity';
 import { MailService } from 'src/mail/mail.service';
@@ -109,15 +108,21 @@ export class UserService {
           relations: ['user'],
         }).catch(() => null);
 
-      // Verify if token expired
+      if (!token)
+        throw new BadRequestException(
+          'Provided token is not valid or was already used',
+        );
 
-      if (!token) throw new BadRequestException('Provided token is invalid');
+      if (!isNotExpired(token.expiresIn * 1000))
+        throw new BadRequestException('Provided token is expired');
 
       await User.createQueryBuilder('user')
         .update()
         .set({ password: hashedNewPassword })
         .where('id = :id', { id: token.user.id })
         .execute();
+
+      await token.remove();
     } else {
       // Se for uma solicitação de administrador
       if (!userId || userId.length === 0)
@@ -141,11 +146,11 @@ export class UserService {
     });
 
     if (user) {
-      const token = await crypto.randomBytes(12).toString('hex');
+      const token = await crypto.randomBytes(20).toString('hex');
 
       const pcToken: PasswordChangeToken = new PasswordChangeToken();
       pcToken.token = token;
-      pcToken.expiresIn = Math.floor(new Date().getTime() / 1000) + 1800;
+      pcToken.expiresIn = Math.floor(new Date().getTime() / 1000) + 600;
       pcToken.user = user;
       await pcToken.save();
 
