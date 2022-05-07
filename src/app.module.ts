@@ -11,7 +11,7 @@ import { AdminModule } from './admin/admin.module';
 import { RouterModule } from '@nestjs/core';
 import { MailModule } from './mail/mail.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { config } from 'process';
+import { StatisticsModule } from './statistics/statistics.module';
 
 @Module({
   imports: [
@@ -23,6 +23,7 @@ import { config } from 'process';
     ServiceModule,
     AdminModule,
     MailModule,
+    StatisticsModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),

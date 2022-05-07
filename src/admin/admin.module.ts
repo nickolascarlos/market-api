@@ -1,9 +1,6 @@
 import { Module } from '@nestjs/common';
-
 import { UserController } from './user.controller';
-
 import { ServiceCategoryController } from './service-category.controller';
-
 import { ServiceGroupController } from './service-group.controller';
 import { ProviderController } from './provider.controller';
 import { ServiceController } from './service.controller';
@@ -12,6 +9,8 @@ import { ProviderModule } from 'src/provider/provider.module';
 import { ServiceGroupModule } from 'src/service-group/service-group.module';
 import { ServiceModule } from 'src/service/service.module';
 import { UserModule } from 'src/user/user.module';
+import { StatisticsModule } from 'src/statistics/statistics.module';
+import { StatisticsController } from './statistics.controller';
 
 @Module({
   imports: [
@@ -20,6 +19,7 @@ import { UserModule } from 'src/user/user.module';
     ServiceGroupModule,
     ProviderModule,
     ServiceModule,
+    StatisticsModule,
   ],
   controllers: [
     UserController,
@@ -27,6 +27,7 @@ import { UserModule } from 'src/user/user.module';
     ServiceGroupController,
     ProviderController,
     ServiceController,
+    StatisticsController,
   ],
 })
 export class AdminModule {}
