@@ -137,3 +137,12 @@ export enum WeekDay {
   'FRIDAY',
   'SATURDAY',
 }
+
+export enum SearchField {
+  'ORIGIN',
+  'DESTINATION',
+  'GOING_DATE',
+  'GOING_TIME',
+  'RETURN_TIME',
+  'RETURN_DATE',
+}
