@@ -5,5 +5,5 @@ export class UpdateUserPasswordDto {
   newPassword: string;
 
   @IsNotEmpty()
-  currentPassword: string;
+  token: string;
 }

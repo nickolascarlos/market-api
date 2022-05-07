@@ -12,9 +12,20 @@ import { User } from './entities/user.entity';
 import { Provider } from 'src/provider/entities/provider.entity';
 import { UpdateUserPasswordDto } from './dto/update-password.dto';
 import { validateEmail } from 'src/utilities';
+import { RequestPasswordChangeDto } from './dto/request-password-change.dto';
+import { PasswordChangeToken } from './entities/password-change-token.entity';
+import { MailService } from 'src/mail/mail.service';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class UserService {
+  constructor(
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+    private readonly mailService: MailService,
+  ) {}
+
   async create(payload: CreateUserDto) {
     const newUser = new User();
     Object.assign(newUser, {
@@ -81,46 +92,69 @@ export class UserService {
 
   async changePassword(
     payload: UpdateUserPasswordDto,
-    userId: string,
+    userId: string = null,
     adminAction = false,
   ) {
-    // Se não for uma solicitação de um administrador,
-    // as seguintes verificações devem ser feitas
-    if (!adminAction) {
-      // Verifica se currentPassword de fato corresponde à senha atual do usuário logado
-      const hashedCurrentPassword = crypto
-        .createHash('sha256')
-        .update(payload.currentPassword)
-        .digest('hex');
-
-      const user: User = await User.findOne({
-        where: {
-          id: userId,
-          password: hashedCurrentPassword,
-        },
-      });
-
-      if (!user) {
-        throw new UnauthorizedException(
-          'The provided currentPassword does not match the actual current password',
-        );
-      }
-    }
-
-    // Se as senhas corresponderem (ou for uma solicitação
-    // do administrador), atualiza a senha
     const hashedNewPassword = crypto
       .createHash('sha256')
       .update(payload.newPassword)
       .digest('hex');
 
-    await User.createQueryBuilder('user')
-      .update()
-      .set({ password: hashedNewPassword })
-      .where('id = :id', { id: userId })
-      .execute();
+    // Se não for uma solicitação de um administrador,
+    // as seguintes verificações devem ser feitas
+    if (!adminAction) {
+      // Verifica se o token é válido
+      const token: PasswordChangeToken =
+        await PasswordChangeToken.findOneOrFail(payload.token, {
+          relations: ['user'],
+        }).catch(() => null);
+
+      // Verify if token expired
+
+      if (!token) throw new BadRequestException('Provided token is invalid');
+
+      await User.createQueryBuilder('user')
+        .update()
+        .set({ password: hashedNewPassword })
+        .where('id = :id', { id: token.user.id })
+        .execute();
+    } else {
+      // Se for uma solicitação de administrador
+      if (!userId || userId.length === 0)
+        throw new BadRequestException('A user must be specified');
+
+      await User.createQueryBuilder('user')
+        .update()
+        .set({ password: hashedNewPassword })
+        .where('id = :id', { id: userId })
+        .execute();
+    }
 
     return 'updated';
+  }
+
+  async requestPasswordChange(payload: RequestPasswordChangeDto) {
+    const user: User = await User.findOne({
+      where: {
+        email: payload.email,
+      },
+    });
+
+    if (user) {
+      const token = await crypto.randomBytes(12).toString('hex');
+
+      const pcToken: PasswordChangeToken = new PasswordChangeToken();
+      pcToken.token = token;
+      pcToken.expiresIn = Math.floor(new Date().getTime() / 1000) + 1800;
+      pcToken.user = user;
+      await pcToken.save();
+
+      await this.mailService.sendPasswordResetToken(
+        token,
+        user.email,
+        `${user.firstName} ${user.lastName}`,
+      );
+    }
   }
 
   async checkEmailAvailability(email: string) {

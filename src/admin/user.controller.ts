@@ -13,6 +13,7 @@ import {
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { RoleGuard } from 'src/auth/guards/role.guard';
 import { Roles } from 'src/decorators/roles.decorator';
+import { UpdateUserPasswordDto } from 'src/user/dto/update-password.dto';
 import { UpdateUserDto } from 'src/user/dto/update-user.dto';
 import { UserService } from 'src/user/user.service';
 import { customValidationPipe } from 'src/utilities';
@@ -57,7 +58,10 @@ export class UserController {
   @UsePipes(customValidationPipe)
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Roles('admin')
-  changePassword(@Body() payload, @Param('user_id', ParseUUIDPipe) userId) {
+  changePassword(
+    @Body() payload,
+    @Param('user_id', ParseUUIDPipe) userId: string,
+  ) {
     return this.userService.changePassword(payload, userId, true);
   }
 }

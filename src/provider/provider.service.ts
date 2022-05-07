@@ -3,15 +3,21 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { off } from 'process';
 import { UserService } from 'src/user/user.service';
+import { Repository } from 'typeorm';
 import { CreateProviderDto } from './dto/create-provider.dto';
 import { UpdateProviderDto } from './dto/update-provider.dto';
 import { Provider } from './entities/provider.entity';
 
 @Injectable()
 export class ProviderService {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    @InjectRepository(Provider)
+    private readonly providerRepository: Repository<Provider>,
+    private readonly userService: UserService,
+  ) {}
 
   async create(payload: CreateProviderDto, userId: string) {
     const newProvider = new Provider();
