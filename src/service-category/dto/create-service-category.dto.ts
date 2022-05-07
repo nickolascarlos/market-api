@@ -1,10 +1,12 @@
 import {
   IsArray,
+  IsEnum,
   IsNotEmpty,
   IsOptional,
   IsString,
   Validate,
 } from 'class-validator';
+import { SearchField } from 'src/types';
 import ApiNameNotInUse_ServiceCategory from 'src/validators/ApiNameNotInUse_ServiceCategory.validator';
 import ValidServiceGroupName from 'src/validators/ValidServiceGroupName.validator';
 
@@ -13,6 +15,7 @@ export class CreateServiceCategoryDto {
   displayName: string;
 
   @IsNotEmpty()
+  @IsString()
   icon: string;
 
   @IsNotEmpty()
@@ -31,4 +34,9 @@ export class CreateServiceCategoryDto {
   @IsOptional()
   @IsString()
   description: string;
+
+  @IsNotEmpty()
+  @IsString({ each: true })
+  @IsEnum(SearchField, { each: true })
+  searchFields: string[];
 }

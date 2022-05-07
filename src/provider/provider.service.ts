@@ -4,8 +4,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { off } from 'process';
-import { UserService } from 'src/user/user.service';
+import { Service } from 'src/service/entities/service.entity';
 import { Repository } from 'typeorm';
 import { CreateProviderDto } from './dto/create-provider.dto';
 import { UpdateProviderDto } from './dto/update-provider.dto';
@@ -16,7 +15,8 @@ export class ProviderService {
   constructor(
     @InjectRepository(Provider)
     private readonly providerRepository: Repository<Provider>,
-    private readonly userService: UserService,
+    @InjectRepository(Service)
+    private readonly serviceRepository: Repository<Service>,
   ) {}
 
   async create(payload: CreateProviderDto, userId: string) {
@@ -43,6 +43,14 @@ export class ProviderService {
       relations: ['services', 'services.category'],
     }).catch(() => {
       throw new NotFoundException('No provider with such id');
+    });
+  }
+
+  findProviderServices(id: string) {
+    return this.serviceRepository.find({
+      where: {
+        providerId: id,
+      },
     });
   }
 
