@@ -34,6 +34,11 @@ export class ProviderController {
     return this.providerService.findOne(id);
   }
 
+  @Get(':id/services')
+  findServices(@Param('id', ParseUUIDPipe) id: string) {
+    return this.providerService.findProviderServices(id);
+  }
+
   @Patch(':id')
   @UsePipes(customValidationPipe)
   @UseGuards(JwtAuthGuard)
