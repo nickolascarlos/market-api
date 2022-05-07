@@ -13,6 +13,7 @@ export class CreateServiceCategoryDto {
   displayName: string;
 
   @IsNotEmpty()
+  @IsString()
   icon: string;
 
   @IsNotEmpty()
