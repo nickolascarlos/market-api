@@ -23,7 +23,7 @@ O cérebro da [moblit.app](https://moblit.app)
 ## Afazeres
 
 ### ⚠️ Urgentes
-- [ ] Migrar o banco de dados para o Heroku
+- [x] ~Migrar o banco de dados para o Heroku~
 
 ### 🤖 Funcionalidades
 - [x] ~Implementar rotas de administrador~
