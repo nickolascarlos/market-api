@@ -113,8 +113,8 @@ export class ServiceService {
     const query = Service.getRepository().createQueryBuilder('service');
 
     if (payload.categoryName)
-      query.andWhere(`"categoryId" = :categoryId`, {
-        categoryId: payload.categoryName,
+      query.andWhere(`"categoryName" = :categoryName`, {
+        categoryName: payload.categoryName,
       });
 
     if (payload.destination)
