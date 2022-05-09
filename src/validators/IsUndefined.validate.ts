@@ -3,6 +3,7 @@ import {
   ValidatorConstraintInterface,
   ValidationArguments,
 } from 'class-validator';
+import { __ } from 'src/translatorInstance';
 
 @ValidatorConstraint({ name: 'isUndefined', async: true })
 export default class IsUndefined implements ValidatorConstraintInterface {
@@ -11,6 +12,6 @@ export default class IsUndefined implements ValidatorConstraintInterface {
   }
 
   defaultMessage(args: ValidationArguments) {
-    return `This field should not exist`;
+    return __(`This field should not exist`);
   }
 }

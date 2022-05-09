@@ -4,6 +4,7 @@ import {
   ValidationArguments,
 } from 'class-validator';
 import { ServiceGroup } from 'src/service-group/entities/service-group.entity';
+import { __ } from 'src/translatorInstance';
 
 @ValidatorConstraint({ name: 'isValidServiceGroupName', async: true })
 export default class ValidServiceGroupName
@@ -17,6 +18,8 @@ export default class ValidServiceGroupName
   }
 
   defaultMessage(args: ValidationArguments) {
-    return `No such service group with such name ${args.object['groupName']}`;
+    return __(
+      `No such service group with such name ${args.object['groupName']}`,
+    );
   }
 }

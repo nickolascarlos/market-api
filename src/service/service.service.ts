@@ -8,10 +8,10 @@ import { CreateServiceDto } from './dto/create-service.dto';
 import { UpdateServiceDto } from './dto/update-service.dto';
 import { Service } from './entities/service.entity';
 import * as _ from 'lodash';
-import { result } from 'lodash';
-import { Like, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { searchDto } from './dto/search.dto';
 import { InjectRepository } from '@nestjs/typeorm';
+import { __ } from 'src/translatorInstance';
 
 @Injectable()
 export class ServiceService {
@@ -49,7 +49,7 @@ export class ServiceService {
     const service: Service = await Service.findOneOrFail(id, {
       relations: ['category'],
     }).catch((e) => {
-      throw new NotFoundException('No service with such id');
+      throw new NotFoundException(__('No service with such id'));
     });
 
     // Transforma o JSON armazenado no banco de
@@ -102,7 +102,7 @@ export class ServiceService {
       .findOneFromUser(service.providerId, userId)
       .catch((e) => {
         throw new ForbiddenException(
-          'This service does not belong to the logged-in user',
+          __('This service does not belong to the logged-in user'),
         );
       });
 

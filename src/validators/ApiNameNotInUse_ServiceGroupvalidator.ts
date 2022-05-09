@@ -4,6 +4,7 @@ import {
   ValidationArguments,
 } from 'class-validator';
 import { ServiceGroup } from 'src/service-group/entities/service-group.entity';
+import { __ } from 'src/translatorInstance';
 
 @ValidatorConstraint({ name: 'isApiNameNotInUse', async: true })
 export default class ApiNameNotInUse_ServiceGroup
@@ -17,6 +18,6 @@ export default class ApiNameNotInUse_ServiceGroup
   }
 
   defaultMessage(args: ValidationArguments) {
-    return `Such apiName is already in use`;
+    return __(`Such apiName is already in use`);
   }
 }

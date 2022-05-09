@@ -5,6 +5,7 @@ import {
   Matches,
   ValidateIf,
 } from 'class-validator';
+import { __ } from 'src/translatorInstance';
 
 export class searchDto {
   @IsOptional()
@@ -22,13 +23,13 @@ export class searchDto {
   @IsOptional()
   @IsString()
   @Matches(/(\d{4})-0?(\d+)-0?(\d+)/, {
-    message: 'date must be a valid ISO date string: yyyy-mm-dd',
+    message: __('date must be a valid ISO date string: yyyy-mm-dd'),
   })
   date: string;
 
   @ValidateIf((o) => o.date !== undefined)
   @IsNotEmpty({
-    message: 'As date is provided, a timezone is needed',
+    message: __('As date is provided, a timezone is needed'),
   })
   @IsString()
   timezone: string;

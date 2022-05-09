@@ -4,6 +4,7 @@ import {
   ValidationArguments,
 } from 'class-validator';
 import { ServiceCategory } from 'src/service-category/entities/service-category.entity';
+import { __ } from 'src/translatorInstance';
 
 @ValidatorConstraint({ name: 'isValidServiceCategoryName', async: true })
 export default class ValidServiceCategoryName
@@ -20,6 +21,8 @@ export default class ValidServiceCategoryName
   }
 
   defaultMessage(args: ValidationArguments) {
-    return `No such service category with id ${args.object['categoryName']}`;
+    return __(
+      __(`No such service category with id ${args.object['categoryName']}`),
+    );
   }
 }

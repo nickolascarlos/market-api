@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Service } from 'src/service/entities/service.entity';
+import { __ } from 'src/translatorInstance';
 import { Repository } from 'typeorm';
 import { CreateProviderDto } from './dto/create-provider.dto';
 import { UpdateProviderDto } from './dto/update-provider.dto';
@@ -42,7 +43,7 @@ export class ProviderService {
     return Provider.findOneOrFail(id, {
       relations: ['services', 'services.category'],
     }).catch(() => {
-      throw new NotFoundException('No provider with such id');
+      throw new NotFoundException(__('No provider with such id'));
     });
   }
 
@@ -63,7 +64,7 @@ export class ProviderService {
       // Make sure Provider belongs to logged-in user
       if (provider.userId !== loggedInUserId)
         throw new UnauthorizedException(
-          'Provider does not belong to logged-in user',
+          __('Provider does not belong to logged-in user'),
         );
     }
 
@@ -85,7 +86,7 @@ export class ProviderService {
 
     if (provider.userId !== loggedInUserId)
       throw new UnauthorizedException(
-        'Provider does not belong to logged-in user',
+        __('Provider does not belong to logged-in user'),
       );
 
     return await provider;

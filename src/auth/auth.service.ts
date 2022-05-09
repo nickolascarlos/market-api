@@ -1,6 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as _ from 'lodash';
+import { __ } from 'src/translatorInstance';
 
 import { User } from 'src/user/entities/user.entity';
 import { UserService } from 'src/user/user.service';
@@ -46,7 +47,7 @@ export class AuthService {
     const tokenExp: number = req.user.exp;
     return {
       expiresIn: tokenExp - now,
-      timeUnit: 'seconds',
+      timeUnit: __('seconds'),
     };
   }
 
