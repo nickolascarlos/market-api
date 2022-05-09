@@ -14,7 +14,7 @@ import { isNotExpired, validateEmail } from 'src/utilities';
 import { RequestPasswordChangeDto } from './dto/request-password-change.dto';
 import { PasswordChangeToken } from './entities/password-change-token.entity';
 import { MailService } from 'src/mail/mail.service';
-import { Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { __ } from 'src/translatorInstance';
 
@@ -85,7 +85,7 @@ export class UserService {
 
   getByCredentials(email: string, password: string) {
     return User.findOne({
-      email,
+      email: ILike(email),
       password: crypto.createHash('sha256').update(password).digest('hex'),
     });
   }
@@ -142,7 +142,7 @@ export class UserService {
   async requestPasswordChange(payload: RequestPasswordChangeDto) {
     const user: User = await User.findOne({
       where: {
-        email: payload.email,
+        email: ILike(payload.email),
       },
     });
 
@@ -170,7 +170,7 @@ export class UserService {
 
     const user: User = await User.findOne({
       where: {
-        email: email,
+        email: ILike(email),
       },
     });
 
