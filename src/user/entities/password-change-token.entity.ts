@@ -13,7 +13,9 @@ export class PasswordChangeToken extends BaseEntity {
   @PrimaryColumn()
   token: string;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, (user) => user.pcToken, {
+    onDelete: 'CASCADE',
+  })
   user: User;
 
   @Column()

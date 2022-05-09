@@ -8,6 +8,7 @@ import {
   UpdateDateColumn,
   OneToMany,
 } from 'typeorm';
+import { PasswordChangeToken } from './password-change-token.entity';
 
 @Entity('User')
 export class User extends BaseEntity {
@@ -39,6 +40,11 @@ export class User extends BaseEntity {
     cascade: ['remove'],
   })
   providers: Array<Provider>;
+
+  @OneToMany(() => PasswordChangeToken, (pcToken) => pcToken.user, {
+    cascade: ['remove'],
+  })
+  pcToken: PasswordChangeToken;
 
   @CreateDateColumn()
   createdAt: Date;
