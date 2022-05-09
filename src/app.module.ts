@@ -37,11 +37,10 @@ import { StatisticsModule } from './statistics/statistics.module';
       imports: [ConfigModule],
       useFactory: (config: ConfigService) => ({
         type: 'postgres',
-        host: config.get('DATABASE_HOST'),
-        port: 5432,
-        username: config.get('DATABASE_USERNAME'),
-        password: config.get('DATABASE_PASSWORD'),
-        database: config.get('DATABASE_NAME'),
+        ssl: {
+          rejectUnauthorized: false,
+        },
+        url: config.get('DATABASE_URL'),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
         synchronize: true,
       }),

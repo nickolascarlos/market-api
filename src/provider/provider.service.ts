@@ -46,12 +46,9 @@ export class ProviderService {
     });
   }
 
-  findProviderServices(id: string) {
-    return this.serviceRepository.find({
-      where: {
-        providerId: id,
-      },
-    });
+  async findProviderServices(id: string) {
+    const provider: Provider = await this.findOne(id);
+    return provider.services;
   }
 
   async update(
