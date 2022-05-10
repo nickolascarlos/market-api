@@ -81,17 +81,17 @@ export default [
 
   {
     pattern: 'No such service category with id {#}',
-    translation: 'Não existe categoria de serviço com o id {0}',
+    translation: 'Não existe categoria de serviço com o id `{0}`',
   },
 
   {
     pattern: 'No such service group with id {#}',
-    translation: 'Não existe grupo de serviço com o id {0}',
+    translation: 'Não existe grupo de serviço com o id `{0}`',
   },
 
   {
     pattern: '{#} must be a valid ISO date string: yyyy-mm-dd',
-    translation: '{0} deve estar no seguinte formato:  aaaa-mm-dd',
+    translation: '`{0}` deve estar no seguinte formato:  aaaa-mm-dd',
   },
 
   {
