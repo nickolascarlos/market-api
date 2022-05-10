@@ -10,13 +10,14 @@ import {
   Req,
   UseGuards,
   ParseUUIDPipe,
+  Query,
 } from '@nestjs/common';
 import { ServiceService } from './service.service';
 import { CreateServiceDto } from './dto/create-service.dto';
 import { UpdateServiceDto } from './dto/update-service.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { customValidationPipe } from 'src/utilities';
-import { searchDto } from './dto/search.dto';
+import { SearchDto } from './dto/search.dto';
 
 @Controller('services')
 export class ServiceController {
@@ -31,8 +32,8 @@ export class ServiceController {
 
   @Get('search')
   @UsePipes(customValidationPipe)
-  search(@Body() searchDto: searchDto) {
-    return this.serviceService.search(searchDto);
+  search(@Query() payload: SearchDto) {
+    return this.serviceService.search(payload);
   }
 
   @Get(':id')

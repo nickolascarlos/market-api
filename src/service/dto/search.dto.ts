@@ -1,36 +1,39 @@
 import {
+  IsDefined,
   IsNotEmpty,
   IsOptional,
   IsString,
   Matches,
+  Validate,
   ValidateIf,
 } from 'class-validator';
 import { __ } from 'src/translatorInstance';
 
-export class searchDto {
-  @IsOptional()
+export class SearchDto {
+  @IsNotEmpty()
   @IsString()
   categoryName: string;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsString()
   origin: string;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsString()
   destination: string;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsString()
   @Matches(/(\d{4})-0?(\d+)-0?(\d+)/, {
     message: __('date must be a valid ISO date string: yyyy-mm-dd'),
   })
   date: string;
 
-  @ValidateIf((o) => o.date !== undefined)
-  @IsNotEmpty({
-    message: __('As date is provided, a timezone is needed'),
-  })
+  @IsNotEmpty()
+  // @IsDefined({
+  //   message: __('As date is provided, a timezone is needed'),
+  // })
   @IsString()
+  @ValidateIf((o) => o.date !== undefined)
   timezone: string;
 }

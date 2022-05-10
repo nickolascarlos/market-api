@@ -9,7 +9,7 @@ import { UpdateServiceDto } from './dto/update-service.dto';
 import { Service } from './entities/service.entity';
 import * as _ from 'lodash';
 import { Repository } from 'typeorm';
-import { searchDto } from './dto/search.dto';
+import { SearchDto } from './dto/search.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { __ } from 'src/translatorInstance';
 
@@ -109,7 +109,7 @@ export class ServiceService {
     return service;
   }
 
-  async search(payload: searchDto) {
+  async search(payload: SearchDto) {
     const query = Service.getRepository().createQueryBuilder('service');
 
     if (payload.categoryName)
