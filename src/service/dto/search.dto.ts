@@ -10,30 +10,29 @@ import {
 import { __ } from 'src/translatorInstance';
 
 export class SearchDto {
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   categoryName: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   origin: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   destination: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   @Matches(/(\d{4})-0?(\d+)-0?(\d+)/, {
     message: __('date must be a valid ISO date string: yyyy-mm-dd'),
   })
   date: string;
 
-  @IsNotEmpty()
-  // @IsDefined({
-  //   message: __('As date is provided, a timezone is needed'),
-  // })
-  @IsString()
   @ValidateIf((o) => o.date !== undefined)
+  @IsNotEmpty({
+    message: __('As date is provided, a timezone is needed'),
+  })
+  @IsString()
   timezone: string;
 }
