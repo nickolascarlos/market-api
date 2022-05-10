@@ -19,6 +19,7 @@ export class Translator {
       const match = error.match(pattern);
       if (match) return format(translation, ...match.slice(1));
     }
+    return error; // Se não encontra uma tradução, retorna o erro não traduzido
   }
 
   translateClassValidatorErrors(errors: ValidationError[]) {
