@@ -104,4 +104,14 @@ export default [
     pattern: 'The category cannot be updated',
     translation: 'A categoria não pode ser atualizada',
   },
+
+  {
+    pattern: 'Invalid or invisible group',
+    translation: 'Grupo inválido ou invisível',
+  },
+
+  {
+    pattern: 'Invalid or invisible category',
+    translation: 'Categoria inválida ou invisível',
+  },
 ];

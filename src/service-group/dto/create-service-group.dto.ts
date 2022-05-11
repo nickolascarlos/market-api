@@ -1,4 +1,11 @@
-import { IsNotEmpty, IsOptional, IsString, Validate } from 'class-validator';
+import {
+  IsBoolean,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  Validate,
+} from 'class-validator';
 import ApiNameNotInUse_ServiceGroup from 'src/validators/ApiNameNotInUse_ServiceGroupvalidator';
 
 export class CreateServiceGroupDto {
@@ -15,4 +22,12 @@ export class CreateServiceGroupDto {
   @IsOptional()
   @IsString()
   description: string;
+
+  @IsOptional()
+  @IsNumber()
+  order: number;
+
+  @IsOptional()
+  @IsBoolean()
+  isVisible: boolean;
 }

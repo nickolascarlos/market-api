@@ -12,7 +12,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { Amenity } from 'src/types';
-import ValidServiceCategoryName from 'src/validators/ValidServiceCategoryName.validator';
+import ValidAndVisibleServiceCategoryName from 'src/validators/ValidAndVisibleServiceCategoryName';
 import { CreateServiceDetailsDto } from './service-details.dto';
 
 export class CreateServiceDto {
@@ -21,7 +21,7 @@ export class CreateServiceDto {
   providerId: string;
 
   @IsNotEmpty()
-  @Validate(ValidServiceCategoryName)
+  @Validate(ValidAndVisibleServiceCategoryName)
   categoryName: string;
 
   @IsString()

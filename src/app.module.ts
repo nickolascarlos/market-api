@@ -42,7 +42,7 @@ import { StatisticsModule } from './statistics/statistics.module';
         },
         url: config.get('DATABASE_URL'),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        synchronize: config.get<boolean>('PRODUCTION') ? false : true,
+        synchronize: true,
       }),
       inject: [ConfigService],
     }),

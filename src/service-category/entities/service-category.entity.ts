@@ -46,4 +46,10 @@ export class ServiceCategory extends BaseEntity {
 
   @Column('text', { array: true, default: [] })
   searchFields: string[];
+
+  @Column({ default: -1 })
+  order: number;
+
+  @Column({ default: true })
+  isVisible: boolean;
 }

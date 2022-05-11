@@ -1,7 +1,9 @@
 import {
   IsArray,
+  IsBoolean,
   IsEnum,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
   Validate,
@@ -39,4 +41,12 @@ export class CreateServiceCategoryDto {
   @IsString({ each: true })
   @IsEnum(SearchField, { each: true })
   searchFields: string[];
+
+  @IsOptional()
+  @IsNumber()
+  order: number;
+
+  @IsOptional()
+  @IsBoolean()
+  isVisible: boolean;
 }
