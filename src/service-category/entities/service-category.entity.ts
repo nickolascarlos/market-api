@@ -48,7 +48,7 @@ export class ServiceCategory extends BaseEntity {
   searchFields: string[];
 
   @Column({ default: -1 })
-  order: number;
+  displayOrder: number;
 
   @Column({ default: true })
   isVisible: boolean;

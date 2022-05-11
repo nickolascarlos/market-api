@@ -44,7 +44,7 @@ export class CreateServiceCategoryDto {
 
   @IsOptional()
   @IsNumber()
-  order: number;
+  displayOrder: number;
 
   @IsOptional()
   @IsBoolean()

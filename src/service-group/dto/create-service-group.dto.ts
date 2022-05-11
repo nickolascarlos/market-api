@@ -25,7 +25,7 @@ export class CreateServiceGroupDto {
 
   @IsOptional()
   @IsNumber()
-  order: number;
+  displayOrder: number;
 
   @IsOptional()
   @IsBoolean()

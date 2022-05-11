@@ -25,7 +25,7 @@ export class ServiceGroup extends BaseEntity {
   description: string;
 
   @Column({ default: -1 })
-  order: number;
+  displayOrder: number;
 
   @Column({ default: true })
   isVisible: boolean;
