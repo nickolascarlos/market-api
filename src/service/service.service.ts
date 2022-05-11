@@ -139,4 +139,41 @@ export class ServiceService {
 
     return results;
   }
+
+  async protoSearch(query: string) {
+    return await this.serviceRepository.query(
+      `WITH
+    initial as (SELECT id, "categoryName", description, details FROM "Service"),
+    data_expanded as (SELECT id, "categoryName",
+              COALESCE(details->'origin'->'address'->>'city', details->'itinerary'->'origin'->'address'->>'city') as "originCity",
+              COALESCE(details->'origin'->'address'->>'text', details->'itinerary'->'origin'->'address'->>'text') as "originPlace",
+              COALESCE(details->'destination'->'address'->>'city', details->'itinerary'->'destination'->'address'->>'city') as "destinationCity",
+              COALESCE(details->'destination'->'address'->>'city', details->'itinerary'->'destination'->'address'->>'text') as "destinationPlace",
+                      (details->>'tripStartDateTime') as "startDateTime",
+                  details->'workingDays' as "workingDays"
+            FROM initial),
+    working_days_expanded as (SELECT id, jsonb_array_elements("workingDays") as temp_wod FROM data_expanded),
+    wods_translation as (SELECT id, array_agg(CASE 
+                                     WHEN temp_wod = '"SUNDAY"' 	 THEN 'domingo'
+                                     WHEN temp_wod = '"MONDAY"' 	 THEN 'segunda-feira'
+                                     WHEN temp_wod = '"TUESDAY"' 	 THEN 'terca-feira'
+                                     WHEN temp_wod = '"WEDNESDAY"' THEN 'quarta-feira'
+                                     WHEN temp_wod = '"THURSDAY"'  THEN 'quinta-feira'
+                                     WHEN temp_wod = '"FRIDAY"'    THEN 'sexta-feira'
+                                     WHEN temp_wod = '"SATURDAY"'  THEN 'sabado'
+                                   END) as translated_wods
+                       from working_days_expanded GROUP BY id),
+    translated_wods as (SELECT data_expanded.id, "categoryName", "startDateTime", "originCity", "originPlace", "destinationCity", "destinationPlace", translated_wods as "workingDays" FROM data_expanded FULL JOIN wods_translation ON data_expanded.id = wods_translation.id),
+    category_expanded as (SELECT translated_wods.*, "ServiceCategory"."alternativeNames" as "alternativeCategoryNames" FROM translated_wods FULL JOIN "ServiceCategory" ON translated_wods."categoryName" = "ServiceCategory"."apiName"),
+    ranking_parameters as (SELECT 
+      (CASE WHEN (to_tsquery('portuguese', $1) @@ to_tsvector('portuguese', "originCity")) = true THEN 1 ELSE 0 END) as "rOriginCity",
+      (CASE WHEN (to_tsquery('portuguese', $1) @@ to_tsvector('portuguese', "destinationCity")) = true THEN 1 ELSE 0 END) as "rDestinationCity",
+      (CASE WHEN (to_tsquery('portuguese', $1) @@ to_tsvector('portuguese', "categoryName") 
+              OR (to_tsquery('portuguese', $1) @@ to_tsvector('portuguese', "alternativeCategoryNames"::text))) = true THEN 1 ELSE 0 END) as "rCategoryName",
+      (CASE WHEN (to_tsquery('portuguese', $1) @@ to_tsvector('portuguese', "workingDays"::text)) = true THEN 1 ELSE 0 END) as "rWorkingDays", *
+    FROM category_expanded)
+  SELECT ("rOriginCity" * 4 + "rDestinationCity" * 2 + "rCategoryName" * 3 + "rWorkingDays" * 3.5) as note, * FROM ranking_parameters WHERE ("rOriginCity" * 4 + "rDestinationCity" * 2 + "rCategoryName" * 3 + "rWorkingDays" * 3.5) > 0 ORDER BY note DESC`,
+      [_.deburr(query).split(' ').join(' | ')],
+    );
+  }
 }

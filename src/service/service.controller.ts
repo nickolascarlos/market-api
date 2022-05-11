@@ -36,6 +36,11 @@ export class ServiceController {
     return this.serviceService.search(payload);
   }
 
+  @Get('proto-search')
+  protoSearch(@Query('q') query: string) {
+    return this.serviceService.protoSearch(query);
+  }
+
   @Get(':id')
   findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.serviceService.findOne(id);
