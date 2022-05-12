@@ -12,6 +12,7 @@ import { RouterModule } from '@nestjs/core';
 import { MailModule } from './mail/mail.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { StatisticsModule } from './statistics/statistics.module';
+import { FileModule } from './file/file.module';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { StatisticsModule } from './statistics/statistics.module';
       }),
       inject: [ConfigService],
     }),
+    FileModule,
   ],
   controllers: [],
   providers: [],

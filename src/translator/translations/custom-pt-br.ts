@@ -114,4 +114,14 @@ export default [
     pattern: 'Invalid or invisible category',
     translation: 'Categoria inválida ou invisível',
   },
+
+  {
+    pattern: 'No file with such id',
+    translation: 'Não existe arquivo com o id informado',
+  },
+
+  {
+    pattern: 'The specified file does not belong to the logged-in user',
+    translation: 'O arquivo especificado não pertence ao usuário logado',
+  },
 ];
