@@ -81,7 +81,7 @@ export class UserService {
   async remove(id: string) {
     const user: User = await this.findOne(id);
     if (user.role === 'admin')
-      throw new ForbiddenException(__('An admin account cannot be deleted'));
+      throw new ForbiddenException(__('Admin accounts cannot be deleted'));
     await user.remove();
   }
 

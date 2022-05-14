@@ -124,4 +124,9 @@ export default [
     pattern: 'The specified file does not belong to the logged-in user',
     translation: 'O arquivo especificado não pertence ao usuário logado',
   },
+
+  {
+    pattern: 'Admin accounts cannot be deleted',
+    translation: 'Contas de administrador não podem ser removidas',
+  },
 ];
