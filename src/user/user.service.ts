@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -79,8 +80,9 @@ export class UserService {
 
   async remove(id: string) {
     const user: User = await this.findOne(id);
+    if (user.role === 'admin')
+      throw new ForbiddenException(__('An admin account cannot be deleted'));
     await user.remove();
-    return 'removed';
   }
 
   getByCredentials(email: string, password: string) {
