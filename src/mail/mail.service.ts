@@ -25,4 +25,48 @@ export class MailService {
         <p>Se não foi você quem solicitou, basta ignorar este email :)</p>`,
     });
   }
+
+  async sendContactUsMessage(
+    name: string,
+    email: string,
+    topic: string,
+    message: string,
+  ) {
+    this.mailerService.sendMail({
+      to: 'moblitapp@gmail.com',
+      subject: `Contate-nos | ${topic}`,
+      replyTo: email,
+      html: `
+      <style>
+      body {
+        font-family: helvetica;
+      }
+      
+      .message {
+        margin-left: 20px;
+      }
+      </style>
+      <div>
+      <p>
+          <strong>Nome:</strong>
+          <span class='field'>${name}</span></p>
+      <p>
+          <strong>Email:</strong>
+          <span class='field'>${email}</span>
+      </p>
+      <p>
+          <strong>Tópico:</strong>
+          <span class='field'>${topic}</span>
+      </p>
+      <p>
+        <strong>Mensagem:</strong><br/>
+        <p class='message'>
+          ${message}
+        </p>
+      </p>
+      
+      </div>
+      `,
+    });
+  }
 }

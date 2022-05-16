@@ -13,6 +13,7 @@ import { MailModule } from './mail/mail.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { StatisticsModule } from './statistics/statistics.module';
 import { FileModule } from './file/file.module';
+import { ContactModule } from './contact/contact.module';
 
 @Module({
   imports: [
@@ -48,6 +49,7 @@ import { FileModule } from './file/file.module';
       inject: [ConfigService],
     }),
     FileModule,
+    ContactModule,
   ],
   controllers: [],
   providers: [],
