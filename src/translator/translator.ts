@@ -17,8 +17,6 @@ export class Translator {
 
   translateError(error: string, language: string): string | undefined {
     // Só traduz se alguma língua tiver sido especificada
-    console.log(this.translations);
-    console.log(language);
     if (language)
       for (let i = 0; i < this.translations[language].length; i++) {
         const { pattern, translation } = this.translations[language][i];
