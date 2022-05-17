@@ -3,7 +3,6 @@ import {
   ValidatorConstraintInterface,
 } from 'class-validator';
 import { ServiceCategory } from 'src/service-category/entities/service-category.entity';
-import { __ } from 'src/translatorInstance';
 
 @ValidatorConstraint({
   name: 'isValidAndVisibleServiceCategoryName',
@@ -32,6 +31,6 @@ export default class ValidAndVisibleServiceCategoryName
   }
 
   defaultMessage() {
-    return __(`Invalid or invisible category`);
+    return `Invalid or invisible category`;
   }
 }

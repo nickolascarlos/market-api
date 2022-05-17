@@ -1,6 +1,5 @@
 import { BadRequestException, ValidationPipe } from '@nestjs/common';
 import ValidationError from './translator/interfaces/ValidationError.interface';
-import translator from './translatorInstance';
 
 export const customValidationPipe = new ValidationPipe({
   whitelist: true,
@@ -12,9 +11,7 @@ export const customValidationPipe = new ValidationPipe({
     value: false,
   },
   exceptionFactory: (errors) =>
-    new BadRequestException(
-      translator.translateClassValidatorErrors(errors as ValidationError[]),
-    ),
+    new BadRequestException(errors as ValidationError[]),
 });
 
 export const validateEmail = (email) => {

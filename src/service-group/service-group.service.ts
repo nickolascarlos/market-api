@@ -1,6 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { __ } from 'src/translatorInstance';
 import { Repository } from 'typeorm';
 import { CreateServiceGroupDto } from './dto/create-service-group.dto';
 import { UpdateServiceGroupDto } from './dto/update-service-group.dto';
@@ -32,7 +31,7 @@ export class ServiceGroupService {
     const group: ServiceGroup = await ServiceGroup.findOneOrFail(id, {
       relations: ['categories'],
     }).catch((e) => {
-      throw new NotFoundException(__('No service group with such id'));
+      throw new NotFoundException('No service group with such id');
     });
 
     return group;

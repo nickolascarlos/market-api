@@ -356,6 +356,10 @@ export default [
     translation: '`{0}` não deve ser vazio',
   },
   {
+    pattern: 'property {#} should not exist',
+    translation: 'O campo `{0}` não deveria existir',
+  },
+  {
     pattern: '{#} should not be equal to (.+)',
     translation: '`{0}` não deve ser igual a {1}',
   },

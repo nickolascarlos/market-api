@@ -1,5 +1,6 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+import translator from 'src/translatorInstance';
 
 @Injectable()
 export class RoleGuard implements CanActivate {
@@ -13,7 +14,9 @@ export class RoleGuard implements CanActivate {
     );
 
     if (!requiredRoles)
-      throw 'In a role-protected route, roles must be specified with @Roles(...) decorator';
+      throw translator.translateError(
+        'In a role-protected route, roles must be specified with @Roles(...) decorator',
+      );
 
     return requiredRoles.includes(userRole);
   }

@@ -11,7 +11,6 @@ import * as _ from 'lodash';
 import { Repository } from 'typeorm';
 import { SearchDto } from './dto/search.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { __ } from 'src/translatorInstance';
 
 @Injectable()
 export class ServiceService {
@@ -49,7 +48,7 @@ export class ServiceService {
     const service: Service = await Service.findOneOrFail(id, {
       relations: ['category'],
     }).catch((e) => {
-      throw new NotFoundException(__('No service with such id'));
+      throw new NotFoundException('No service with such id');
     });
 
     // Transforma o JSON armazenado no banco de
@@ -102,7 +101,7 @@ export class ServiceService {
       .findOneFromUser(service.providerId, userId)
       .catch((e) => {
         throw new ForbiddenException(
-          __('This service does not belong to the logged-in user'),
+          'This service does not belong to the logged-in user',
         );
       });
 

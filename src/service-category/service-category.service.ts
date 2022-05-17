@@ -1,6 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { __ } from 'src/translatorInstance';
 import { Repository } from 'typeorm';
 import { CreateServiceCategoryDto } from './dto/create-service-category.dto';
 import { UpdateServiceCategoryDto } from './dto/update-service-category.dto';
@@ -32,7 +31,7 @@ export class ServiceCategoryService {
     const category: ServiceCategory = await ServiceCategory.findOneOrFail(id, {
       relations: ['group'],
     }).catch((e) => {
-      throw new NotFoundException(__('No service category with such id'));
+      throw new NotFoundException('No service category with such id');
     });
 
     return category;

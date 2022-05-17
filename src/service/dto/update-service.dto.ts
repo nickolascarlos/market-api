@@ -1,6 +1,5 @@
 import { OmitType, PartialType } from '@nestjs/mapped-types';
 import { Validate, ValidatorConstraint } from 'class-validator';
-import { __ } from 'src/translatorInstance';
 import IsUndefined from 'src/validators/IsUndefined.validate';
 import { CreateServiceDto } from './create-service.dto';
 
@@ -9,7 +8,7 @@ export class UpdateServiceDto extends PartialType(
   OmitType(CreateServiceDto, ['providerId', 'categoryName']),
 ) {
   @Validate(IsUndefined, {
-    message: __('The category cannot be updated'),
+    message: 'The category cannot be updated',
   })
   categoryName: string;
 }

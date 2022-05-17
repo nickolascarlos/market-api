@@ -8,6 +8,7 @@ import {
   Delete,
   UsePipes,
   HttpCode,
+  UseInterceptors,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -20,6 +21,7 @@ import { customValidationPipe } from 'src/utilities';
 import { RoleGuard } from 'src/auth/guards/role.guard';
 import { UpdateUserPasswordDto } from './dto/update-password.dto';
 import { RequestPasswordChangeDto } from './dto/request-password-change.dto';
+import { TranslatorInterceptor } from 'src/translator/interceptors/translator.interceptor';
 
 @Controller('users')
 export class UserController {
@@ -27,6 +29,7 @@ export class UserController {
 
   @Post()
   @UsePipes(customValidationPipe)
+  @UseInterceptors(TranslatorInterceptor)
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
   }

@@ -17,7 +17,6 @@ import { PasswordChangeToken } from './entities/password-change-token.entity';
 import { MailService } from 'src/mail/mail.service';
 import { ILike, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { __ } from 'src/translatorInstance';
 
 @Injectable()
 export class UserService {
@@ -67,7 +66,7 @@ export class UserService {
     return User.findOneOrFail(id, {
       relations: [...(includeProviders ? ['providers'] : [])],
     }).catch(() => {
-      throw new NotFoundException(__('User not found'));
+      throw new NotFoundException('User not found');
     });
   }
 
@@ -81,7 +80,7 @@ export class UserService {
   async remove(id: string) {
     const user: User = await this.findOne(id);
     if (user.role === 'admin')
-      throw new ForbiddenException(__('Admin accounts cannot be deleted'));
+      throw new ForbiddenException('Admin accounts cannot be deleted');
     await user.remove();
   }
 
@@ -113,11 +112,11 @@ export class UserService {
 
       if (!token)
         throw new BadRequestException(
-          __('Provided token is not valid or was already used'),
+          'Provided token is not valid or was already used',
         );
 
       if (!isNotExpired(token.expiresIn * 1000))
-        throw new BadRequestException(__('Provided token is expired'));
+        throw new BadRequestException('Provided token is expired');
 
       await User.createQueryBuilder('user')
         .update()
@@ -129,7 +128,7 @@ export class UserService {
     } else {
       // Se for uma solicitação de administrador
       if (!userId || userId.length === 0)
-        throw new BadRequestException(__('A user must be specified'));
+        throw new BadRequestException('A user must be specified');
 
       await User.createQueryBuilder('user')
         .update()
@@ -168,7 +167,7 @@ export class UserService {
   async checkEmailAvailability(email: string) {
     // Verifica se se trata de um email válido
     if (!validateEmail(email))
-      throw new BadRequestException(__('Provided email is not valid'));
+      throw new BadRequestException('Provided email is not valid');
 
     const user: User = await User.findOne({
       where: {
