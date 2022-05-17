@@ -2,6 +2,7 @@ import {
   BadRequestException,
   CallHandler,
   ExecutionContext,
+  HttpException,
   Injectable,
   NestInterceptor,
 } from '@nestjs/common';
@@ -18,33 +19,21 @@ export class TranslatorInterceptor implements NestInterceptor {
     return next.handle().pipe(
       catchError((err) => {
         const response = err.getResponse();
-        console.log(response);
 
         if (err instanceof BadRequestException) {
-          if (response instanceof Object) console.log(response['message']);
-          const translatedError =
-            response instanceof Object
-              ? {
-                  ...response,
-                  message: translator.translateClassValidatorErrors(
-                    response['message'],
-                    acceptLanguage,
-                  ),
-                }
-              : err.getResponse();
-
-          return of([translatedError]);
+          response['message'] = translator.translateClassValidatorErrors(
+            response['message'],
+            acceptLanguage,
+          );
+          throw new BadRequestException(response);
         }
 
-        return of([
-          {
-            ...response,
-            message: translator.translateError(
-              response['message'],
-              acceptLanguage,
-            ),
-          },
-        ]);
+        err.response['message'] = translator.translateError(
+          response['message'],
+          acceptLanguage,
+        );
+
+        throw err;
       }),
     );
   }
