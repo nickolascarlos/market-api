@@ -29,7 +29,7 @@ O cérebro da [moblit.app](https://moblit.app)
 - [x] ~Implementar rotas de administrador~
 - [x] ~Implementar o envio de email para redefinição de senha~
 - [x] ~Implementar tradução de erros~
-- [ ] Melhorar o sistema de tradução, implementando i18n e passando a tradução para um Exception Filter
+- [x]  ~Melhorar o sistema de tradução, implementando i18n e passando a tradução para um Interceptor (não Exception Filter)~
 
 ### 🛠️ Ferramentas
 - [ ] Implementar testes
