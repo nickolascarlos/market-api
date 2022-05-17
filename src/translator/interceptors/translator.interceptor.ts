@@ -12,6 +12,9 @@ import translator from 'src/translatorInstance';
 @Injectable()
 export class TranslatorInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+    const acceptLanguage: string = context.switchToHttp().getRequest().headers[
+      'accept-language'
+    ];
     return next.handle().pipe(
       catchError((err) => {
         const response = err.getResponse();
@@ -25,6 +28,7 @@ export class TranslatorInterceptor implements NestInterceptor {
                   ...response,
                   message: translator.translateClassValidatorErrors(
                     response['message'],
+                    acceptLanguage,
                   ),
                 }
               : err.getResponse();
@@ -35,7 +39,10 @@ export class TranslatorInterceptor implements NestInterceptor {
         return of([
           {
             ...response,
-            message: translator.translateError(response['message']),
+            message: translator.translateError(
+              response['message'],
+              acceptLanguage,
+            ),
           },
         ]);
       }),
