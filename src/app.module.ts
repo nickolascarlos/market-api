@@ -26,6 +26,8 @@ import { ContactModule } from './contact/contact.module';
     AdminModule,
     MailModule,
     StatisticsModule,
+    FileModule,
+    ContactModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
@@ -42,14 +44,15 @@ import { ContactModule } from './contact/contact.module';
         ssl: {
           rejectUnauthorized: false,
         },
-        url: config.get('DATABASE_URL'),
+        url:
+          config.get('PRODUCTION') === 'TRUE'
+            ? config.get('DATABASE_URL')
+            : config.get('DEV_DATABASE_URL'),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        synchronize: true,
+        synchronize: config.get('PRODUCTION') === 'FALSE',
       }),
       inject: [ConfigService],
     }),
-    FileModule,
-    ContactModule,
   ],
   controllers: [],
   providers: [],
