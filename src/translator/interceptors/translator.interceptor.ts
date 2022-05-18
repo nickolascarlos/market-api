@@ -6,8 +6,7 @@ import {
   Injectable,
   NestInterceptor,
 } from '@nestjs/common';
-import { tap } from 'rxjs';
-import { catchError, Observable, of } from 'rxjs';
+import { catchError, Observable } from 'rxjs';
 import translator from 'src/translatorInstance';
 
 @Injectable()
@@ -18,22 +17,26 @@ export class TranslatorInterceptor implements NestInterceptor {
     ];
     return next.handle().pipe(
       catchError((err) => {
+        console.log(err);
+        if (!(err instanceof HttpException)) throw err;
+
         const response = err.getResponse();
 
         if (err instanceof BadRequestException) {
-          response['message'] = translator.translateClassValidatorErrors(
-            response['message'],
-            acceptLanguage,
-          );
+          response['message'] =
+            response['message'] instanceof Object
+              ? translator.translateClassValidatorErrors(
+                  response['message'],
+                  acceptLanguage,
+                )
+              : translator.translateError(response['message'], acceptLanguage);
           throw new BadRequestException(response);
         }
 
-        err.response['message'] = translator.translateError(
-          response['message'],
-          acceptLanguage,
+        throw new HttpException(
+          translator.translateError(response['message'], acceptLanguage),
+          err.getStatus(),
         );
-
-        throw err;
       }),
     );
   }
