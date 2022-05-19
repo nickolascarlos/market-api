@@ -14,6 +14,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { StatisticsModule } from './statistics/statistics.module';
 import { FileModule } from './file/file.module';
 import { ContactModule } from './contact/contact.module';
+import { SentryModule } from '@ntegral/nestjs-sentry';
 
 @Module({
   imports: [
@@ -50,6 +51,15 @@ import { ContactModule } from './contact/contact.module';
             : config.get('DEV_DATABASE_URL'),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
         synchronize: config.get('PRODUCTION') === 'FALSE',
+      }),
+      inject: [ConfigService],
+    }),
+    SentryModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (config: ConfigService) => ({
+        dsn: config.get('SENTRY_DSN'),
+        environment: config.get('PRODUCTION') === 'TRUE' ? 'production' : 'dev',
+        logLevel: config.get('SENTRY_LOG_LEVEL'),
       }),
       inject: [ConfigService],
     }),
