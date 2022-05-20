@@ -1,12 +1,9 @@
 import { Type } from 'class-transformer';
 import {
   IsBoolean,
-  IsDate,
-  IsDateString,
   IsEnum,
   IsNumber,
   IsOptional,
-  IsString,
   Max,
   Min,
   ValidateNested,

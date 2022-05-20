@@ -9,7 +9,7 @@ export class SchoolShuttle {
 export class Carpool {
   itinerary: Itinerary;
   tripStartDateTime: string;
-  seats: number;
+  vehicleSeats: number;
   acceptsPackages: boolean;
   isTripStartTimeFlexible: boolean;
 }
@@ -19,7 +19,7 @@ export class Vanpool {
   goingTripStartTime: string;
   returnTripStartTime: string;
   workingDays: WeekDay[];
-  seats: number;
+  vehicleSeats: number;
   acceptsPackages: boolean;
   isTripStartTimeFlexible: boolean;
 }
@@ -32,6 +32,9 @@ export class Charter {
   hourlyPrice: number;
   mileagePrice: number;
   hasDriver: boolean;
+  workingDays: WeekDay[];
+  workingHoursStart: number;
+  workingHoursEnd: number;
 }
 
 export class Rental {
@@ -57,6 +60,16 @@ export class Freight {
   hasFurnitureAssembly: boolean;
 }
 
+export interface PrivateCar {
+  origin: Place;
+  operationAreas: Place[];
+  vehicleType: VehicleType;
+  vehicleSeats: number;
+  workingDays: WeekDay[];
+  workingHoursStart: number;
+  workingHoursEnd: number;
+}
+
 // Helpers
 
 export type PossibleServices =
@@ -65,7 +78,8 @@ export type PossibleServices =
   | Freight
   | Vanpool
   | Charter
-  | Rental;
+  | Rental
+  | PrivateCar;
 
 export class Address {
   text: string;
@@ -99,6 +113,7 @@ export enum VehicleType {
   'TRAILER',
   'VAN',
   'BUS',
+  'EXEC_BUS',
   'MICROBUS',
   'TRUCK',
   'JET_SKI',
