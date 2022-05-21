@@ -13,7 +13,7 @@ import {
 } from 'class-validator';
 import { Amenity } from 'src/types';
 import ValidAndVisibleServiceCategoryName from 'src/validators/ValidAndVisibleServiceCategoryName';
-import { CreateServiceDetailsDto } from './service-details.dto';
+import { CreatePartialServiceDetailsDto } from './service-details.dto';
 
 export class CreateServiceDto {
   @IsUUID()
@@ -44,6 +44,6 @@ export class CreateServiceDto {
 
   @IsNotEmptyObject()
   @ValidateNested()
-  @Type(() => CreateServiceDetailsDto)
-  details: CreateServiceDetailsDto;
+  @Type(() => CreatePartialServiceDetailsDto)
+  details: CreatePartialServiceDetailsDto;
 }

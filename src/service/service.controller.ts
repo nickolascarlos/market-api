@@ -18,15 +18,18 @@ import { UpdateServiceDto } from './dto/update-service.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { customValidationPipe } from 'src/utilities';
 import { SearchDto } from './dto/search.dto';
+import { ServiceDetailsPipe } from 'src/pipes/ServiceDetails.pipe';
 
 @Controller('services')
 export class ServiceController {
   constructor(private readonly serviceService: ServiceService) {}
 
   @Post()
-  @UsePipes(customValidationPipe)
   @UseGuards(JwtAuthGuard)
-  create(@Body() createServiceDto: CreateServiceDto, @Req() req) {
+  create(
+    @Body(ServiceDetailsPipe) createServiceDto: CreateServiceDto,
+    @Req() req,
+  ) {
     return this.serviceService.create(createServiceDto, req.user.userId);
   }
 

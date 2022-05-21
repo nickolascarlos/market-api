@@ -1,9 +1,12 @@
+import { PartialType } from '@nestjs/mapped-types';
 import { Type } from 'class-transformer';
 import {
+  ArrayNotEmpty,
   IsBoolean,
   IsEnum,
+  IsNotEmpty,
+  IsNotEmptyObject,
   IsNumber,
-  IsOptional,
   Max,
   Min,
   ValidateNested,
@@ -13,132 +16,136 @@ import { CreateItineraryDto } from './create-itinerary.dto';
 import { PlaceDto } from './create-place.dto';
 
 export class CreateServiceDetailsDto {
-  @IsOptional()
+  @IsNotEmptyObject()
   @ValidateNested()
   @Type(() => CreateItineraryDto)
   itinerary: CreateItineraryDto;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsNumber()
   @Min(0)
   @Max(86399000)
   goingTripStartTime: number;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsNumber()
   @Min(0)
   @Max(86399000)
   returnTripStartTime: number;
 
-  @IsOptional()
+  @ArrayNotEmpty()
   @IsEnum(WeekDay, { each: true })
   workingDays: WeekDay[];
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsBoolean()
   hasAssistant: boolean;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsNumber()
   tripStartDateTime: number;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsNumber()
   seats: number;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsBoolean()
   acceptsPackages: boolean;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsBoolean()
   isTripStartTimeFlexible: boolean;
 
-  @IsOptional()
+  @IsNotEmptyObject()
   @ValidateNested()
   @Type(() => PlaceDto)
   origin: PlaceDto;
 
-  @IsOptional()
+  @ArrayNotEmpty()
   @ValidateNested({ each: true })
   @Type(() => PlaceDto)
   operatingAreas: PlaceDto[];
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsNumber({
     maxDecimalPlaces: 0,
   })
   vehicleSeats: number;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsEnum(VehicleType)
   vehicleType: VehicleType;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsNumber({
     maxDecimalPlaces: 2,
   })
   hourlyPrice: number;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsNumber({
     maxDecimalPlaces: 2,
   })
   mileagePrice: number;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsBoolean()
   hasDriver: boolean;
 
-  @IsOptional()
+  @ArrayNotEmpty()
   @ValidateNested({ each: true })
   @Type(() => PlaceDto)
   dropOffPlaces: PlaceDto[];
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsNumber({
     maxDecimalPlaces: 2,
   })
   dailyPrice: number;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsNumber({
     maxDecimalPlaces: 2,
   })
   surplusMileagePrice: number;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsNumber()
   @Min(0)
   @Max(86399000)
   workingHoursStart: string;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsNumber()
   @Min(0)
   @Max(86399000)
   workingHoursEnd: string;
 
-  @IsOptional()
+  @ArrayNotEmpty()
   @ValidateNested({ each: true })
   @Type(() => PlaceDto)
   operationAreas: PlaceDto[];
 
-  @IsOptional()
+  @ArrayNotEmpty()
   @IsEnum(CargoType, { each: true })
   cargoTypes: CargoType[];
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsNumber({
     maxDecimalPlaces: 2,
   })
   maximumWeight: number;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsBoolean()
   hasPackaging: boolean;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsBoolean()
   hasFurnitureAssembly: boolean;
 }
+
+export class CreatePartialServiceDetailsDto extends PartialType(
+  CreateServiceDetailsDto,
+) {}
