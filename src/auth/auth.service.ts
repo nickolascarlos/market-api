@@ -4,6 +4,7 @@ import * as _ from 'lodash';
 
 import { User } from 'src/user/entities/user.entity';
 import { UserService } from 'src/user/user.service';
+import { Authentication } from './entities/authentication.entity';
 
 @Injectable()
 export class AuthService {
@@ -30,6 +31,13 @@ export class AuthService {
     userData.providers = userData.providers.map((provider) => {
       return _.omit(provider, ['user_id']);
     });
+
+    const authentication: Authentication = new Authentication();
+    authentication.userId = user.id;
+    authentication.ip =
+      req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    authentication.timestamp = new Date();
+    await authentication.save();
 
     return {
       token,
