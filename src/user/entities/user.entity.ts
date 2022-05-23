@@ -11,7 +11,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { PasswordChangeToken } from './password-change-token.entity';
-import { File } from 'src/file/entities/file.entity';
+import { File } from '../../file/entities/file.entity';
 
 @Entity('User')
 export class User extends BaseEntity {

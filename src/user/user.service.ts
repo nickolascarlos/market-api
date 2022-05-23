@@ -73,15 +73,15 @@ export class UserService {
 
   async update(id: string, payload: UpdateUserDto) {
     const user: User = await this.findOne(id);
-    const hasAvatar = Boolean(user.avatarFileId);
+    const avatar = user.avatarFileId;
 
     Object.assign(user, payload);
     await user.save();
 
     // Verifica se o avatar está sendo apagado.
     // Se estiver, remove o arquivo.
-    if (payload.avatarFileId === null && hasAvatar) {
-      const avatarFile: File = await File.findOne(user.avatarFileId);
+    if (payload.avatarFileId === null && Boolean(avatar)) {
+      const avatarFile: File = await File.findOne(avatar);
       avatarFile.remove();
     }
 
