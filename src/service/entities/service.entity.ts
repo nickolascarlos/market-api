@@ -1,5 +1,5 @@
-import { Provider } from 'src/provider/entities/provider.entity';
-import { ServiceCategory } from 'src/service-category/entities/service-category.entity';
+import { Provider } from '../../provider/entities/provider.entity';
+import { ServiceCategory } from '../../service-category/entities/service-category.entity';
 import { Amenity, PossibleServices } from 'src/types';
 import {
   BaseEntity,

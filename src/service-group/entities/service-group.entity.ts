@@ -1,4 +1,4 @@
-import { ServiceCategory } from 'src/service-category/entities/service-category.entity';
+import { ServiceCategory } from '../../service-category/entities/service-category.entity';
 import { BaseEntity, Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 
 @Entity('ServiceGroup')

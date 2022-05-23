@@ -1,5 +1,5 @@
-import { Service } from 'src/service/entities/service.entity';
-import { User } from 'src/user/entities/user.entity';
+import { Service } from '../../service/entities/service.entity';
+import { User } from '../../user/entities/user.entity';
 import {
   BaseEntity,
   Column,

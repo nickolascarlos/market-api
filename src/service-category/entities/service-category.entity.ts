@@ -1,5 +1,5 @@
-import { ServiceGroup } from 'src/service-group/entities/service-group.entity';
-import { Service } from 'src/service/entities/service.entity';
+import { ServiceGroup } from '../../service-group/entities/service-group.entity';
+import { Service } from '../../service/entities/service.entity';
 import {
   BaseEntity,
   Column,

@@ -1,4 +1,4 @@
-import { Provider } from 'src/provider/entities/provider.entity';
+import { Provider } from '../../provider/entities/provider.entity';
 import {
   Entity,
   BaseEntity,

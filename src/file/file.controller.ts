@@ -13,6 +13,7 @@ import {
 import { FileService } from './file.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
+import { memoryStorage } from 'multer';
 
 @Controller('files')
 export class FileController {
@@ -20,7 +21,12 @@ export class FileController {
 
   @Post()
   @UseGuards(JwtAuthGuard)
-  @UseInterceptors(FileInterceptor('file', { dest: './files' }))
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: memoryStorage(),
+      limits: { fileSize: 1024 * 512 },
+    }),
+  )
   create(@UploadedFile() uploadedFile: Express.Multer.File, @Req() req) {
     return this.fileService.create(uploadedFile, req.user.userId);
   }

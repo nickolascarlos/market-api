@@ -1,4 +1,4 @@
-import { User } from 'src/user/entities/user.entity';
+import { User } from '../../user/entities/user.entity';
 import {
   BaseEntity,
   Column,
@@ -6,12 +6,12 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
-  PrimaryColumn,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 
 @Entity('File')
 export class File extends BaseEntity {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
@@ -26,6 +26,9 @@ export class File extends BaseEntity {
 
   @Column()
   userId: string;
+
+  @Column({ type: 'bytea' })
+  data: Buffer;
 
   @CreateDateColumn()
   createdAt: string;

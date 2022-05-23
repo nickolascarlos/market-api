@@ -11,7 +11,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { Provider } from 'src/provider/entities/provider.entity';
 import { UpdateUserPasswordDto } from './dto/update-password.dto';
-import { isNotExpired, validateEmail } from 'src/utilities';
+import { isNotExpired, validateEmail } from '../utilities';
 import { RequestPasswordChangeDto } from './dto/request-password-change.dto';
 import { PasswordChangeToken } from './entities/password-change-token.entity';
 import { MailService } from 'src/mail/mail.service';
