@@ -2,7 +2,9 @@ import {
   IsBoolean,
   IsEmail,
   IsNotEmpty,
+  IsOptional,
   IsPhoneNumber,
+  IsUUID,
   Validate,
 } from 'class-validator';
 import EmailNotInUse from 'src/validators/EmailNotInUse.validator';
@@ -29,4 +31,8 @@ export class CreateUserDto {
   @IsBoolean()
   @IsNotEmpty()
   isPhoneWhatsApp: boolean;
+
+  @IsOptional()
+  @IsUUID()
+  avatarFileId: string;
 }

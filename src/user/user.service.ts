@@ -17,6 +17,7 @@ import { PasswordChangeToken } from './entities/password-change-token.entity';
 import { MailService } from 'src/mail/mail.service';
 import { ILike, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { File } from '../file/entities/file.entity';
 
 @Injectable()
 export class UserService {
@@ -72,8 +73,18 @@ export class UserService {
 
   async update(id: string, payload: UpdateUserDto) {
     const user: User = await this.findOne(id);
+    const hasAvatar = Boolean(user.avatarFileId);
+
     Object.assign(user, payload);
     await user.save();
+
+    // Verifica se o avatar está sendo apagado.
+    // Se estiver, remove o arquivo.
+    if (payload.avatarFileId === null && hasAvatar) {
+      const avatarFile: File = await File.findOne(user.avatarFileId);
+      avatarFile.remove();
+    }
+
     return user;
   }
 

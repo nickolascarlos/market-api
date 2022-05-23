@@ -7,8 +7,11 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
+  OneToOne,
+  JoinColumn,
 } from 'typeorm';
 import { PasswordChangeToken } from './password-change-token.entity';
+import { File } from 'src/file/entities/file.entity';
 
 @Entity('User')
 export class User extends BaseEntity {
@@ -35,6 +38,15 @@ export class User extends BaseEntity {
 
   @Column({ default: false })
   isPhoneWhatsApp: boolean;
+
+  @OneToOne(() => File, {
+    cascade: ['remove'],
+  })
+  @JoinColumn({ name: 'avatarFileId' })
+  avatarFile: File;
+
+  @Column({ nullable: true })
+  avatarFileId: string;
 
   @OneToMany(() => Provider, (provider) => provider.user, {
     cascade: ['remove'],
