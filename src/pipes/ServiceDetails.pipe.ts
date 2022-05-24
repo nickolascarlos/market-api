@@ -8,15 +8,20 @@ import { customPipeOptions } from 'src/utilities';
 export class ServiceDetailsPipe implements PipeTransform {
   async transform(value: any, metadata: ArgumentMetadata) {
     // Verifica se é uma instância de CreateServiceDto
-    value = plainToInstance(CreateServiceDto, value);
-    await validateOrReject(value, customPipeOptions).catch((e) => {
+    await validateOrReject(
+      plainToInstance(CreateServiceDto, value),
+      customPipeOptions,
+    ).catch((e) => {
       throw customPipeOptions.exceptionFactory(e);
     });
 
     // Valida o details de acordo com o categoryName
     const detailsValidatorClass = details[value.categoryName];
-    value.details = plainToInstance(detailsValidatorClass, value.details);
-    await validateOrReject(value.details).catch((e) => {
+    console.log(detailsValidatorClass);
+    await validateOrReject(
+      plainToInstance(detailsValidatorClass, value.details),
+      customPipeOptions,
+    ).catch((e) => {
       throw customPipeOptions.exceptionFactory([
         {
           property: 'details',
