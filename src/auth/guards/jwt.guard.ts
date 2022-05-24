@@ -13,8 +13,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
   }
 
   handleRequest(err, user, info, context, status) {
-    const acceptLanguage =
-      context.getRequest().headers['accept-language'] || 'en-US';
+    const acceptLanguage = context.getRequest().headers['accept-language'];
 
     if (err || !user) {
       throw (
