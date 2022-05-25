@@ -6,7 +6,7 @@ import {
 import { ServiceGroup } from 'src/service-group/entities/service-group.entity';
 
 @ValidatorConstraint({
-  name: 'isValidAndVisibleServiceCategoryName',
+  name: 'isValidAndVisibleServiceGroupName',
   async: true,
 })
 export default class ValidAndVisibleServiceGroupName
