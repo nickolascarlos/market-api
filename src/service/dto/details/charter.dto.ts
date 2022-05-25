@@ -3,7 +3,7 @@ import { CreateServiceDetailsDto } from '../service-details.dto';
 
 export class CharterDetails extends PickType(CreateServiceDetailsDto, [
   'origin',
-  'operatingAreas',
+  'operationAreas',
   'vehicleSeats',
   'vehicleType',
   'hourlyPrice',

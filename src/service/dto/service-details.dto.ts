@@ -62,11 +62,6 @@ export class CreateServiceDetailsDto {
   @Type(() => PlaceDto)
   origin: PlaceDto;
 
-  @ArrayNotEmpty()
-  @ValidateNested({ each: true })
-  @Type(() => PlaceDto)
-  operatingAreas: PlaceDto[];
-
   @IsNotEmpty()
   @IsNumber({
     maxDecimalPlaces: 0,
