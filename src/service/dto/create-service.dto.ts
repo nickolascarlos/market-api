@@ -1,5 +1,6 @@
 import { Type } from 'class-transformer';
 import {
+  ArrayNotEmpty,
   IsBoolean,
   IsEnum,
   IsNotEmpty,
@@ -8,6 +9,10 @@ import {
   IsOptional,
   IsString,
   IsUUID,
+  Max,
+  MaxLength,
+  Min,
+  MinLength,
   Validate,
   ValidateNested,
 } from 'class-validator';
@@ -17,6 +22,7 @@ import { CreatePartialServiceDetailsDto } from './service-details.dto';
 
 export class CreateServiceDto {
   @IsUUID()
+  @IsString()
   @IsNotEmpty()
   providerId: string;
 
@@ -25,21 +31,25 @@ export class CreateServiceDto {
   categoryName: string;
 
   @IsString()
+  @MinLength(10)
+  @MaxLength(1000)
   @IsNotEmpty()
   description: string;
 
   @IsNumber({
     maxDecimalPlaces: 2,
   })
+  @Min(1)
+  @Max(100000)
   @IsOptional()
   price: number;
 
-  @IsNotEmpty()
+  @ArrayNotEmpty()
   @IsEnum(Amenity, { each: true })
   amenities: Amenity[];
 
-  @IsOptional()
   @IsBoolean()
+  @IsNotEmpty()
   acceptsCards: boolean;
 
   @IsNotEmptyObject()

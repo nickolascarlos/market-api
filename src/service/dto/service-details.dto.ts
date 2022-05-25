@@ -46,8 +46,12 @@ export class CreateServiceDetailsDto {
   tripStartDateTime: number;
 
   @IsNotEmpty()
-  @IsNumber()
-  seats: number;
+  @IsNumber({
+    maxDecimalPlaces: 0,
+  })
+  @Min(1)
+  @Max(60)
+  vehicleSeats: number;
 
   @IsNotEmpty()
   @IsBoolean()
@@ -63,12 +67,6 @@ export class CreateServiceDetailsDto {
   origin: PlaceDto;
 
   @IsNotEmpty()
-  @IsNumber({
-    maxDecimalPlaces: 0,
-  })
-  vehicleSeats: number;
-
-  @IsNotEmpty()
   @IsEnum(VehicleType)
   vehicleType: VehicleType;
 
@@ -76,12 +74,16 @@ export class CreateServiceDetailsDto {
   @IsNumber({
     maxDecimalPlaces: 2,
   })
+  @Min(1)
+  @Max(10000)
   hourlyPrice: number;
 
   @IsNotEmpty()
   @IsNumber({
     maxDecimalPlaces: 2,
   })
+  @Min(1)
+  @Max(10000)
   mileagePrice: number;
 
   @IsNotEmpty()
@@ -97,12 +99,16 @@ export class CreateServiceDetailsDto {
   @IsNumber({
     maxDecimalPlaces: 2,
   })
+  @Min(1)
+  @Max(10000)
   dailyPrice: number;
 
   @IsNotEmpty()
   @IsNumber({
     maxDecimalPlaces: 2,
   })
+  @Min(1)
+  @Max(10000)
   surplusMileagePrice: number;
 
   @IsNotEmpty()
@@ -130,6 +136,8 @@ export class CreateServiceDetailsDto {
   @IsNumber({
     maxDecimalPlaces: 2,
   })
+  @Min(1)
+  @Max(100000)
   maximumWeight: number;
 
   @IsNotEmpty()

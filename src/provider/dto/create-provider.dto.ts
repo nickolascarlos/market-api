@@ -6,27 +6,35 @@ import {
   IsPhoneNumber,
   IsString,
   MaxLength,
+  MinLength,
 } from 'class-validator';
 
 export class CreateProviderDto {
   @IsNotEmpty()
   @IsString()
+  @MinLength(5)
   @MaxLength(50)
   name: string;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsString()
-  @MaxLength(300)
+  @MinLength(15)
+  @MaxLength(200)
   about: string;
 
   @IsNotEmpty()
   @IsString()
+  @MinLength(5)
+  @MaxLength(70)
   location: string;
 
+  @IsNotEmpty()
+  @IsString()
   @IsEmail()
   contactEmail: string;
 
   @IsNotEmpty()
+  @IsString()
   @IsPhoneNumber('BR')
   phoneNumber: string;
 

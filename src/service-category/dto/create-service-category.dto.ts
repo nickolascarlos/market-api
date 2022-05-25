@@ -1,11 +1,15 @@
 import {
+  ArrayNotEmpty,
   IsArray,
   IsBoolean,
   IsEnum,
   IsNotEmpty,
   IsNumber,
-  IsOptional,
   IsString,
+  Max,
+  MaxLength,
+  Min,
+  MinLength,
   Validate,
 } from 'class-validator';
 import { SearchField } from 'src/types';
@@ -14,27 +18,40 @@ import ValidServiceGroupName from 'src/validators/ValidServiceGroupName.validato
 
 export class CreateServiceCategoryDto {
   @IsNotEmpty()
+  @IsString()
+  @MinLength(3)
+  @MaxLength(30)
   displayName: string;
 
   @IsNotEmpty()
   @IsString()
+  @MinLength(1)
+  @MaxLength(20)
   icon: string;
 
   @IsNotEmpty()
+  @IsString()
+  @MinLength(3)
+  @MaxLength(20)
   @Validate(ApiNameNotInUse_ServiceCategory)
   apiName: string;
 
-  @IsNotEmpty()
+  @ArrayNotEmpty()
   @IsArray()
   @IsString({ each: true })
+  @MinLength(3, { each: true })
+  @MaxLength(30, { each: true })
   alternativeNames: string[];
 
   @IsNotEmpty()
+  @IsString()
   @Validate(ValidServiceGroupName)
   groupName: string;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsString()
+  @MinLength(10)
+  @MaxLength(100)
   description: string;
 
   @IsNotEmpty()
@@ -42,11 +59,13 @@ export class CreateServiceCategoryDto {
   @IsEnum(SearchField, { each: true })
   searchFields: string[];
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsNumber()
+  @Min(1)
+  @Max(100)
   displayOrder: number;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsBoolean()
   isVisible: boolean;
 }
