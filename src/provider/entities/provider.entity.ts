@@ -9,7 +9,10 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   OneToMany,
+  OneToOne,
+  JoinColumn,
 } from 'typeorm';
+import { File } from '../../file/entities/file.entity';
 
 @Entity('Provider')
 export class Provider extends BaseEntity {
@@ -46,6 +49,13 @@ export class Provider extends BaseEntity {
     cascade: ['remove'],
   })
   services: Service[];
+
+  @OneToOne(() => File)
+  @JoinColumn({ name: 'avatarFileId' })
+  avatarFile: File;
+
+  @Column({ nullable: true })
+  avatarFileId: string;
 
   @CreateDateColumn()
   createdAt: Date;

@@ -5,6 +5,7 @@ import {
   IsOptional,
   IsPhoneNumber,
   IsString,
+  IsUUID,
   MaxLength,
   MinLength,
 } from 'class-validator';
@@ -41,4 +42,9 @@ export class CreateProviderDto {
   @IsNotEmpty()
   @IsBoolean()
   isPhoneWhatsApp: boolean;
+
+  @IsOptional()
+  @IsString()
+  @IsUUID()
+  avatarFileId: string;
 }

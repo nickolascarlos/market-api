@@ -4,6 +4,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { File } from 'src/file/entities/file.entity';
 import { Service } from 'src/service/entities/service.entity';
 import { Repository } from 'typeorm';
 import { CreateProviderDto } from './dto/create-provider.dto';
@@ -58,9 +59,10 @@ export class ProviderService {
     adminAction = false,
   ) {
     const provider = await this.findOne(id);
+    const avatar = provider.avatarFileId;
 
     if (!adminAction) {
-      // Make sure Provider belongs to logged-in user
+      // Certifica-se de que o provedor pertence ao usuário logado
       if (provider.userId !== loggedInUserId)
         throw new UnauthorizedException(
           'Provider does not belong to logged-in user',
@@ -68,7 +70,15 @@ export class ProviderService {
     }
 
     Object.assign(provider, payload);
-    return await provider.save();
+    await provider.save();
+
+    // Remove o avatar trocado
+    if (payload.avatarFileId === null && Boolean(avatar)) {
+      const avatarFile: File = await File.findOne(avatar);
+      await avatarFile.remove();
+    }
+
+    return provider;
   }
 
   async remove(id: string, loggedInUserId: string, adminAction = false) {
