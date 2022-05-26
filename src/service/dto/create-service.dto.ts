@@ -44,7 +44,7 @@ export class CreateServiceDto {
   @IsOptional()
   price: number;
 
-  @ArrayNotEmpty()
+  @IsNotEmpty()
   @IsEnum(Amenity, { each: true })
   amenities: Amenity[];
 
