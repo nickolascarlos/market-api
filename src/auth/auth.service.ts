@@ -63,4 +63,8 @@ export class AuthService {
     const me: User = await this.userService.findOne(req.user.userId);
     return me;
   }
+
+  getAuthenticationsLog() {
+    return Authentication.find();
+  }
 }

@@ -11,6 +11,8 @@ import { ServiceModule } from 'src/service/service.module';
 import { UserModule } from 'src/user/user.module';
 import { StatisticsModule } from 'src/statistics/statistics.module';
 import { StatisticsController } from './statistics.controller';
+import { AuthController } from './auth.controller';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   imports: [
@@ -20,6 +22,7 @@ import { StatisticsController } from './statistics.controller';
     ProviderModule,
     ServiceModule,
     StatisticsModule,
+    AuthModule,
   ],
   controllers: [
     UserController,
@@ -28,6 +31,7 @@ import { StatisticsController } from './statistics.controller';
     ProviderController,
     ServiceController,
     StatisticsController,
+    AuthController,
   ],
 })
 export class AdminModule {}
