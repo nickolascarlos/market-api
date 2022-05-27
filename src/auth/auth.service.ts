@@ -37,6 +37,7 @@ export class AuthService {
     authentication.ip =
       req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     authentication.timestamp = new Date();
+    authentication.userAgent = req.headers['user-agent'] || '';
     await authentication.save();
 
     return {

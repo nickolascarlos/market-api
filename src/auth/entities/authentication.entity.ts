@@ -11,6 +11,9 @@ export class Authentication extends BaseEntity {
   @Column()
   ip: string;
 
+  @Column({ default: '' })
+  userAgent: string;
+
   @Column()
   timestamp: Date;
 }
