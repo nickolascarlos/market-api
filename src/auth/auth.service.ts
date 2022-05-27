@@ -67,4 +67,12 @@ export class AuthService {
   getAuthenticationsLog() {
     return Authentication.find();
   }
+
+  getUserAuthenticationsLog(userId: string) {
+    return Authentication.find({
+      where: {
+        userId,
+      },
+    });
+  }
 }
