@@ -1,6 +1,4 @@
-import { Type } from 'class-transformer';
 import {
-  ArrayNotEmpty,
   IsBoolean,
   IsEnum,
   IsNotEmpty,
@@ -14,11 +12,9 @@ import {
   Min,
   MinLength,
   Validate,
-  ValidateNested,
 } from 'class-validator';
 import { Amenity } from 'src/types';
 import ValidAndVisibleServiceCategoryName from 'src/validators/ValidAndVisibleServiceCategoryName';
-import { CreatePartialServiceDetailsDto } from './service-details.dto';
 
 export class CreateServiceDto {
   @IsUUID()
@@ -52,8 +48,7 @@ export class CreateServiceDto {
   @IsNotEmpty()
   acceptsCards: boolean;
 
+  @IsNotEmpty()
   @IsNotEmptyObject()
-  @ValidateNested()
-  @Type(() => CreatePartialServiceDetailsDto)
-  details: CreatePartialServiceDetailsDto;
+  details: object;
 }

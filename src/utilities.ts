@@ -1,4 +1,5 @@
 import { BadRequestException, ValidationPipe } from '@nestjs/common';
+import { flattenValidationErrors } from 'class-validator-errors-flattener';
 import ValidationError from './translator/interfaces/ValidationError.interface';
 
 export const customPipeOptions = {
@@ -11,7 +12,9 @@ export const customPipeOptions = {
     value: false,
   },
   exceptionFactory: (errors) =>
-    new BadRequestException(errors as ValidationError[]),
+    new BadRequestException(
+      flattenValidationErrors(errors as ValidationError[]),
+    ),
 };
 
 export const customValidationPipe = new ValidationPipe(customPipeOptions);
