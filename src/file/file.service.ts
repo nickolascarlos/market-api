@@ -48,6 +48,13 @@ export class FileService {
     return file;
   }
 
+  findAll() {
+    return this.fileRepository.find({
+      select: ['id', 'originalName', 'mimeType', 'createdAt'],
+      relations: ['user'],
+    });
+  }
+
   async remove(id: string, userId: string) {
     const file: File = await this.findOne(id, null, false);
 

@@ -13,6 +13,8 @@ import { StatisticsModule } from 'src/statistics/statistics.module';
 import { StatisticsController } from './statistics.controller';
 import { AuthController } from './auth.controller';
 import { AuthModule } from 'src/auth/auth.module';
+import { FileModule } from 'src/file/file.module';
+import { FileController } from './file.controller';
 
 @Module({
   imports: [
@@ -23,6 +25,7 @@ import { AuthModule } from 'src/auth/auth.module';
     ServiceModule,
     StatisticsModule,
     AuthModule,
+    FileModule,
   ],
   controllers: [
     UserController,
@@ -32,6 +35,7 @@ import { AuthModule } from 'src/auth/auth.module';
     ServiceController,
     StatisticsController,
     AuthController,
+    FileController,
   ],
 })
 export class AdminModule {}
