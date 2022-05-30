@@ -143,35 +143,40 @@ export class ServiceService {
     return await this.serviceRepository.query(
       `WITH
       initial as (SELECT id, "categoryName", description, details FROM "Service"),
-      data_expanded as (SELECT id, "categoryName",
-                unaccent(COALESCE(details->'origin'->'address'->>'city', details->'itinerary'->'origin'->'address'->>'city')) as "originCity",
-                unaccent(COALESCE(details->'origin'->'address'->>'text', details->'itinerary'->'origin'->'address'->>'text')) as "originPlace",
-                unaccent(COALESCE(details->'destination'->'address'->>'city', details->'itinerary'->'destination'->'address'->>'city')) as "destinationCity",
-                unaccent(COALESCE(details->'destination'->'address'->>'city', details->'itinerary'->'destination'->'address'->>'text')) as "destinationPlace",
-                        (details->>'tripStartDateTime') as "startDateTime",
-                    details->'workingDays' as "workingDays"
-              FROM initial),
-      working_days_expanded as (SELECT id, jsonb_array_elements("workingDays") as temp_wod FROM data_expanded),
-      wods_translation as (SELECT id, array_agg(CASE 
-                                       WHEN temp_wod = '"SUNDAY"' 	 THEN 'domingo'
-                                       WHEN temp_wod = '"MONDAY"' 	 THEN 'segunda-feira'
-                                       WHEN temp_wod = '"TUESDAY"' 	 THEN 'terca-feira'
-                                       WHEN temp_wod = '"WEDNESDAY"' THEN 'quarta-feira'
-                                       WHEN temp_wod = '"THURSDAY"'  THEN 'quinta-feira'
-                                       WHEN temp_wod = '"FRIDAY"'    THEN 'sexta-feira'
-                                       WHEN temp_wod = '"SATURDAY"'  THEN 'sabado'
-                                     END) as translated_wods
-                         from working_days_expanded GROUP BY id),
-      translated_wods as (SELECT data_expanded.id, "categoryName", "startDateTime", "originCity", "originPlace", "destinationCity", "destinationPlace", translated_wods as "workingDays" FROM data_expanded FULL JOIN wods_translation ON data_expanded.id = wods_translation.id),
-      category_expanded as (SELECT translated_wods.*, "ServiceCategory"."alternativeNames" as "alternativeCategoryNames" FROM translated_wods FULL JOIN "ServiceCategory" ON translated_wods."categoryName" = "ServiceCategory"."apiName"),
-      parameters_ready as (SELECT id, 
-          COALESCE(("originCity" || ' ' || "originPlace"), '') as "ol",
-          COALESCE(("destinationCity" || ' ' || "destinationPlace"), '') as "dl",
-          (CASE WHEN "workingDays" IS NULL THEN array[''] else "workingDays" END)::text as "wd",
-          (CASE WHEN "alternativeCategoryNames" IS NULL THEN array[''] else "alternativeCategoryNames" END)::text as "acn"
-      FROM category_expanded),
-      q as (SELECT id, (ol || ' ' || dl || ' ' || wd::text || ' ' || acn::text) as "summa" FROM parameters_ready WHERE id IS NOT NULL)
-      SELECT *, SIMILARITY("summa", $1) as rate FROM q WHERE SIMILARITY("summa", $1) > 0 ORDER BY rate DESC`,
+            data_expanded as (SELECT id, "categoryName",
+                      unaccent(COALESCE(details->'origin'->'address'->>'city', details->'itinerary'->'origin'->'address'->>'city')) as "originCity",
+                      unaccent(COALESCE(details->'origin'->'address'->>'text', details->'itinerary'->'origin'->'address'->>'text')) as "originPlace",
+                      unaccent(COALESCE(details->'destination'->'address'->>'city', details->'itinerary'->'destination'->'address'->>'city')) as "destinationCity",
+                      unaccent(COALESCE(details->'destination'->'address'->>'city', details->'itinerary'->'destination'->'address'->>'text')) as "destinationPlace",
+                              (details->>'tripStartDateTime') as "startDateTime",
+                          details->'workingDays' as "workingDays"
+                    FROM initial),
+            working_days_expanded as (SELECT id, jsonb_array_elements("workingDays") as temp_wod FROM data_expanded),
+            wods_translation as (SELECT id, array_agg(CASE 
+                                             WHEN temp_wod = '"SUNDAY"' 	 THEN 'domingo'
+                                             WHEN temp_wod = '"MONDAY"' 	 THEN 'segunda-feira'
+                                             WHEN temp_wod = '"TUESDAY"' 	 THEN 'terca-feira'
+                                             WHEN temp_wod = '"WEDNESDAY"' THEN 'quarta-feira'
+                                             WHEN temp_wod = '"THURSDAY"'  THEN 'quinta-feira'
+                                             WHEN temp_wod = '"FRIDAY"'    THEN 'sexta-feira'
+                                             WHEN temp_wod = '"SATURDAY"'  THEN 'sabado'
+                                           END) as translated_wods
+                               from working_days_expanded GROUP BY id),
+            translated_wods as (SELECT data_expanded.id, "categoryName", "startDateTime", "originCity", "originPlace", "destinationCity", "destinationPlace", translated_wods as "workingDays" FROM data_expanded FULL JOIN wods_translation ON data_expanded.id = wods_translation.id),
+            category_expanded as (SELECT translated_wods.*, "ServiceCategory"."alternativeNames" as "alternativeCategoryNames" FROM translated_wods FULL JOIN "ServiceCategory" ON translated_wods."categoryName" = "ServiceCategory"."apiName"),
+            stop_expanded as (SELECT jsonb_array_elements(details->'itinerary'->'stops') as stops, id FROM "Service"),
+            stop_places as (SELECT id, stops->'place'->'address'->>'text' as place FROM stop_expanded),
+            stop_agg as (SELECT STRING_AGG(place, ', ') as stop_place, id FROM stop_places GROUP BY id),
+            parameters_ready as (SELECT category_expanded.id, 
+                COALESCE(("originCity" || ' ' || "originPlace"), '') as "ol",
+                COALESCE(("destinationCity" || ' ' || "destinationPlace"), '') as "dl",
+                (CASE WHEN "workingDays" IS NULL THEN array[''] else "workingDays" END)::text as "wd",
+                (CASE WHEN "alternativeCategoryNames" IS NULL THEN array[''] else "alternativeCategoryNames" END)::text as "acn",
+            COALESCE(stop_place, '') as "spl"
+            FROM category_expanded FULL JOIN stop_agg ON category_expanded.id = stop_agg.id),
+            q as (SELECT id, (ol || ' ' || dl || ' ' || wd::text || ' ' || acn::text || ' ' || spl) as "summa" FROM parameters_ready WHERE id IS NOT NULL)
+            
+            SELECT *, SIMILARITY("summa", $1) as rate FROM q WHERE SIMILARITY("summa", $1) > 0 ORDER BY rate DESC`,
       [_.deburr(query).split(' ').join(' | ')],
     );
   }
