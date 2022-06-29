@@ -7,6 +7,7 @@ export class VanpoolDetails extends PickType(CreateServiceDetailsDto, [
   'returnTripStartTime',
   'workingDays',
   'vehicleSeats',
+  'vehicleType',
   'acceptsPackages',
   'isTripStartTimeFlexible',
 ]) {}

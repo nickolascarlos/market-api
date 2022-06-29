@@ -1,5 +1,8 @@
 export class SchoolShuttle {
-  itinerary: Itinerary;
+  origin: Place;
+  operationAreas: Place[];
+  vehicleSeats: number;
+  vehicleType: VehicleType;
   goingTripStartTime: string;
   returnTripStartTime: string;
   workingDays: WeekDay[];
@@ -20,6 +23,7 @@ export class Vanpool {
   returnTripStartTime: string;
   workingDays: WeekDay[];
   vehicleSeats: number;
+  vehicleType: VehicleType;
   acceptsPackages: boolean;
   isTripStartTimeFlexible: boolean;
 }
